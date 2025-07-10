@@ -271,8 +271,15 @@ def refresh_descriptions():
 def remap_selected_transactions():
     """Remap selected transactions"""
     try:
-        transaction_ids = request.form.getlist('transaction_ids')
+        # Check if request is JSON (AJAX)
+        if request.is_json:
+            transaction_ids = request.json.get('transaction_ids', [])
+        else:
+            transaction_ids = request.form.getlist('transaction_ids')
+        
         if not transaction_ids:
+            if request.is_json:
+                return jsonify({'success': False, 'error': 'Nenhuma transação selecionada'}), 400
             flash('Nenhuma transação selecionada.', 'warning')
             return redirect(url_for('transactions'))
 
@@ -290,10 +297,16 @@ def remap_selected_transactions():
                 updated_count += 1
 
         FileHandler.save_transactions(transactions)
+        
+        if request.is_json:
+            return jsonify({'success': True, 'message': f'{updated_count} transações remapeadas com sucesso!'})
+        
         flash(f'{updated_count} transações remapeadas com sucesso!', 'success')
 
     except Exception as e:
         logger.error(f"Error remapping selected transactions: {str(e)}")
+        if request.is_json:
+            return jsonify({'success': False, 'error': str(e)}), 500
         flash(f'Erro ao remapear transações selecionadas: {str(e)}', 'error')
 
     return redirect(url_for('transactions'))
@@ -302,8 +315,15 @@ def remap_selected_transactions():
 def delete_selected_transactions():
     """Delete selected transactions"""
     try:
-        transaction_ids = request.form.getlist('transaction_ids')
+        # Check if request is JSON (AJAX)
+        if request.is_json:
+            transaction_ids = request.json.get('transaction_ids', [])
+        else:
+            transaction_ids = request.form.getlist('transaction_ids')
+        
         if not transaction_ids:
+            if request.is_json:
+                return jsonify({'success': False, 'error': 'Nenhuma transação selecionada'}), 400
             flash('Nenhuma transação selecionada.', 'warning')
             return redirect(url_for('transactions'))
 
@@ -315,10 +335,16 @@ def delete_selected_transactions():
         deleted_count = original_count - len(transactions)
 
         FileHandler.save_transactions(transactions)
+        
+        if request.is_json:
+            return jsonify({'success': True, 'message': f'{deleted_count} transações excluídas com sucesso!'})
+        
         flash(f'{deleted_count} transações excluídas com sucesso!', 'success')
 
     except Exception as e:
         logger.error(f"Error deleting selected transactions: {str(e)}")
+        if request.is_json:
+            return jsonify({'success': False, 'error': str(e)}), 500
         flash(f'Erro ao excluir transações selecionadas: {str(e)}', 'error')
 
     return redirect(url_for('transactions'))
