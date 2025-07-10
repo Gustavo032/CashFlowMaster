@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+exports/
+uploads/
+attached_assets
+.venv
+logs
