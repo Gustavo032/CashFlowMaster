@@ -524,12 +524,19 @@ def list_mapping_presets():
         # Return only essential info for listing
         preset_list = []
         for preset in presets:
+            # Handle both old and new preset formats
+            preset_id = preset.get('id', preset.get('nome_preset', ''))
+            preset_name = preset.get('name', preset.get('nome_preset', 'Preset sem nome'))
+            preset_description = preset.get('description', '')
+            preset_created_at = preset.get('created_at', '')
+            preset_mappings = preset.get('mappings', [])
+            
             preset_list.append({
-                'id': preset['id'],
-                'name': preset['name'],
-                'description': preset.get('description', ''),
-                'created_at': preset.get('created_at', ''),
-                'mappings_count': len(preset.get('mappings', []))
+                'id': preset_id,
+                'name': preset_name,
+                'description': preset_description,
+                'created_at': preset_created_at,
+                'mappings_count': len(preset_mappings)
             })
         
         return jsonify(preset_list)

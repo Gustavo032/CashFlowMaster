@@ -1,47 +1,96 @@
+
 [
   {
-    "nome_preset": "Padrão Empresa Comercial",
-    "mapeamentos": [
+    "id": "preset_empresa_comercial",
+    "name": "Padrão Empresa Comercial",
+    "description": "Mapeamentos padrão para empresas comerciais",
+    "created_at": "2025-07-10 00:00:00",
+    "mappings": [
       {
+        "id": "map_comercial_001",
         "rotulo_contabil": "Vendas à Vista",
+        "descricao_longa": "Vendas à vista de produtos e mercadorias",
+        "tipo_transacao": "entrada",
+        "palavras_chave": ["venda", "vista", "produto"],
+        "regex_avancado": "",
         "conta_debito": "1.1.1.02.001",
         "conta_credito": "4.1.1.01.001",
-        "historico_contabil_padrao": "Vendas à vista"
+        "historico_contabil_padrao": "Vendas à vista",
+        "excecoes": [],
+        "sub_mapeamentos": []
       },
       {
+        "id": "map_comercial_002",
         "rotulo_contabil": "Custo das Mercadorias Vendidas",
+        "descricao_longa": "Custo das mercadorias vendidas",
+        "tipo_transacao": "saida",
+        "palavras_chave": ["custo", "mercadoria", "cmv"],
+        "regex_avancado": "",
         "conta_debito": "3.1.1.01.001",
         "conta_credito": "1.1.2.01.001",
-        "historico_contabil_padrao": "CMV"
+        "historico_contabil_padrao": "CMV",
+        "excecoes": [],
+        "sub_mapeamentos": []
       },
       {
+        "id": "map_comercial_003",
         "rotulo_contabil": "Despesas Administrativas",
+        "descricao_longa": "Despesas administrativas gerais",
+        "tipo_transacao": "saida",
+        "palavras_chave": ["despesa", "administrativa", "admin"],
+        "regex_avancado": "",
         "conta_debito": "3.3.1.01.001",
         "conta_credito": "1.1.1.02.001",
-        "historico_contabil_padrao": "Despesas administrativas"
+        "historico_contabil_padrao": "Despesas administrativas",
+        "excecoes": [],
+        "sub_mapeamentos": []
       }
     ]
   },
   {
-    "nome_preset": "Padrão Empresa de Serviços",
-    "mapeamentos": [
+    "id": "preset_empresa_servicos",
+    "name": "Padrão Empresa de Serviços",
+    "description": "Mapeamentos padrão para empresas de serviços",
+    "created_at": "2025-07-10 00:00:00",
+    "mappings": [
       {
+        "id": "map_servicos_001",
         "rotulo_contabil": "Receita de Serviços",
+        "descricao_longa": "Receita de prestação de serviços",
+        "tipo_transacao": "entrada",
+        "palavras_chave": ["servico", "receita", "prestacao"],
+        "regex_avancado": "",
         "conta_debito": "1.1.1.02.001",
         "conta_credito": "4.1.1.01.001",
-        "historico_contabil_padrao": "Receita de serviços"
+        "historico_contabil_padrao": "Receita de serviços",
+        "excecoes": [],
+        "sub_mapeamentos": []
       },
       {
+        "id": "map_servicos_002",
         "rotulo_contabil": "Salários e Encargos",
+        "descricao_longa": "Salários e encargos sociais",
+        "tipo_transacao": "saida",
+        "palavras_chave": ["salario", "encargo", "funcionario"],
+        "regex_avancado": "",
         "conta_debito": "3.1.1.01.001",
         "conta_credito": "1.1.1.02.001",
-        "historico_contabil_padrao": "Salários e encargos"
+        "historico_contabil_padrao": "Salários e encargos",
+        "excecoes": [],
+        "sub_mapeamentos": []
       },
       {
+        "id": "map_servicos_003",
         "rotulo_contabil": "Despesas Operacionais",
+        "descricao_longa": "Despesas operacionais diversas",
+        "tipo_transacao": "saida",
+        "palavras_chave": ["despesa", "operacional", "operacao"],
+        "regex_avancado": "",
         "conta_debito": "3.3.1.01.001",
         "conta_credito": "1.1.1.02.001",
-        "historico_contabil_padrao": "Despesas operacionais"
+        "historico_contabil_padrao": "Despesas operacionais",
+        "excecoes": [],
+        "sub_mapeamentos": []
       }
     ]
   },
