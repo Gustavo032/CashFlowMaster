@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Transações - CashFlowMaster{% endblock %}
@@ -329,7 +328,7 @@ function updateBulkButtons() {
     const selectedCheckboxes = document.querySelectorAll('.transaction-checkbox:checked');
     const remapBtn = document.getElementById('remapSelected');
     const deleteBtn = document.getElementById('deleteSelected');
-    
+
     if (selectedCheckboxes.length > 0) {
         remapBtn.style.display = 'inline-block';
         deleteBtn.style.display = 'inline-block';
@@ -350,7 +349,7 @@ function remapSelectedTransactions() {
         alert('Nenhuma transação selecionada');
         return;
     }
-    
+
     if (confirm(`Remapear ${selectedIds.length} transação(ões) selecionada(s)?`)) {
         // Send AJAX request to remap selected transactions
         fetch('/transactions/remap_selected', {
@@ -382,7 +381,7 @@ function deleteSelectedTransactions() {
         alert('Nenhuma transação selecionada');
         return;
     }
-    
+
     if (confirm(`Excluir ${selectedIds.length} transação(ões) selecionada(s)? Esta ação não pode ser desfeita.`)) {
         // Send AJAX request to delete selected transactions
         fetch('/transactions/delete_selected', {

@@ -643,5 +643,57 @@
     "historico_contabil_padrao": "Rescisão contratual",
     "excecoes": [],
     "sub_mapeamentos": []
+  },
+  {
+    "id": "map_039",
+    "rotulo_contabil": "Juros de Aplicações",
+    "descricao_longa": "Rendimentos pagos de aplicações automáticas e investimentos",
+    "tipo_transacao": "entrada",
+    "palavras_chave": ["rend pago aplic", "rendimento", "aplicacao automatica"],
+    "regex_avancado": "",
+    "conta_debito": "1.1.1.02.001",
+    "conta_credito": "4.1.3.01.001",
+    "historico_contabil_padrao": "Rendimento de aplicações financeiras",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_040",
+    "rotulo_contabil": "Pagamento de Salários",
+    "descricao_longa": "Pagamentos de salários e remunerações mensais",
+    "tipo_transacao": "saida",
+    "palavras_chave": ["pagto salario", "pagamento salario", "salario"],
+    "regex_avancado": "(?i)pagto\\s+salario",
+    "conta_debito": "3.1.1.01.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Pagamento de salário mensal",
+    "excecoes": ["adiantamento", "rescisao"],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_041",
+    "rotulo_contabil": "Adiantamento Salarial",
+    "descricao_longa": "Adiantamentos de salário concedidos aos funcionários",
+    "tipo_transacao": "saida",
+    "palavras_chave": ["pagto adiantamento", "adiantamento sa", "adiantamento salarial"],
+    "regex_avancado": "(?i)pagto\\s+adiantamento",
+    "conta_debito": "1.1.2.01.002",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Adiantamento salarial concedido",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_042",
+    "rotulo_contabil": "Rescisão Contratual",
+    "descricao_longa": "Pagamentos de rescisão e verbas rescisórias",
+    "tipo_transacao": "saida",
+    "palavras_chave": ["pagto rescisao", "rescisao contra", "verbas rescisoria"],
+    "regex_avancado": "(?i)pagto\\s+rescisao",
+    "conta_debito": "3.1.1.01.002",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Pagamento de rescisão contratual",
+    "excecoes": [],
+    "sub_mapeamentos": []
   }
 ]

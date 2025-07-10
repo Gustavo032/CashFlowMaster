@@ -24,8 +24,11 @@ class Transaction:
         import re
         import unicodedata
         
+        # Clean description first
+        cleaned = self._clean_description(description)
+        
         # Remove accents
-        normalized = unicodedata.normalize('NFD', description)
+        normalized = unicodedata.normalize('NFD', cleaned)
         normalized = ''.join(c for c in normalized if unicodedata.category(c) != 'Mn')
         
         # Convert to lowercase and remove extra spaces
@@ -35,6 +38,23 @@ class Transaction:
         normalized = re.sub(r'[^\w\s]', '', normalized)
         
         return normalized
+    
+    def _clean_description(self, description: str) -> str:
+        """Clean description by removing date prefix and value suffix"""
+        import re
+        
+        cleaned = description.strip()
+        
+        # Remove date prefix (e.g., "20/01/2025 PIX TRANSF..." -> "PIX TRANSF...")
+        date_pattern = r'^\d{2}/\d{2}/\d{4}\s+'
+        cleaned = re.sub(date_pattern, '', cleaned)
+        
+        # Remove value suffix (e.g., "PIX TRANSF GUSTAVO18/01 -1.300,00" -> "PIX TRANSF GUSTAVO18/01")
+        # Look for patterns like " -1.300,00", " 1.300,00", " R$ 1.300,00"
+        value_pattern = r'\s+(?:R\$\s*)?-?\d{1,3}(?:[\.,]\d{3})*(?:[\.,]\d{2})?(?:\s+R\$)?$'
+        cleaned = re.sub(value_pattern, '', cleaned)
+        
+        return cleaned.strip()
     
     def to_dict(self) -> Dict:
         return {
