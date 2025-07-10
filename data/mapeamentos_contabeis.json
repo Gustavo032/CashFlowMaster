@@ -509,25 +509,5 @@
     "historico_contabil_padrao": "Rescisão contratual",
     "excecoes": [],
     "sub_mapeamentos": []
-  },
-  {
-    "id": "f82e15b7-f7c9-4f2d-9532-8fa29649fa87",
-    "rotulo_contabil": "teste",
-    "descricao_longa": "",
-    "tipo_transacao": "neutro",
-    "palavras_chave": [
-      "cheque",
-      " Cheque",
-      " CHEQUE",
-      " TAV"
-    ],
-    "regex_avancado": "",
-    "conta_debito": "00001",
-    "conta_credito": "2626262",
-    "historico_contabil_padrao": "ahaaakm",
-    "excecoes": [
-      ""
-    ],
-    "sub_mapeamentos": []
   }
 ]
