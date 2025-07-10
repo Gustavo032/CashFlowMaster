@@ -1,0 +1,339 @@
+alanço Patrimonial
+
+1 ATIVO
+
+1.1 Ativo Circulante
+
+1.1.1 Disponível
+
+1.1.1.01 Caixa
+
+1.1.1.01.001 Caixa Geral
+
+1.1.1.01.002 Fundo Fixo de Caixa
+
+1.1.1.01.003 ...
+
+1.1.1.02 Banco Conta Movimento
+
+1.1.1.03.001 ...
+
+1.1.1.03 Aplicações Financeiras de Liquidez Imediata
+
+1.1.1.03.001 ...
+
+1.1.2 Clientes
+
+1.1.2.01 Duplicatas a Receber
+
+1.1.2.01.001 ...
+
+1.1.2.02 (-) Duplicatas Descontadas
+
+1.1.2.02.001 (-)...
+
+1.1.2.03 (-) Crédito Vencidos e Não Liquidados
+
+1.2 Ativo Não Circulante
+
+1.2.1 Ativo Realizável a Longo Prazo
+
+1.2.1.01 Duplicatas a Receber
+
+1.2.1.01.001 ...
+
+1.2.1.02 (-) Duplicatas Descontadas
+
+1.2.2 Investimentos
+
+1.2.2.01 Controladas e Coligadas - Equivalência Patrimonial
+
+1.2.2.01.001 Controlada “A” - Valor patrimonial
+
+1.2.3 Imobilizado
+
+1.2.3.01 Imóveis
+
+1.2.3.01.001 Terrenos
+
+1.2.3.01.002 Edifícios
+
+1.2.3.01.003 Construções
+
+1.2.3.01 Móveis e Utensílios
+
+1.2.3.03 Máquinas, Equipamentos e Ferramentas
+
+1.2.4 Intangível
+
+1.2.4.01 Marcas, Direitos e Patentes
+
+2. PASSIVO
+
+2.1 Passivo Circulante
+
+2.1.1 Empréstimos e Financiamentos
+
+2.1.1.01 Empréstimos Nacionais
+
+2.1.1.01.001 ...
+
+2.1.1.02 Empréstimos Estrangeiro
+
+2.1.1.02.001 ...
+
+2.1.1.03 Financiamentos Nacionais
+
+2.1.1.03.001 ...
+
+2.1.1.04 Financiamentos Estrangeiros
+
+2.1.1.04.001 ...
+
+2.1.1.05 Títulos a Pagar
+
+2.2 Passivo não Circulante
+
+2.2.1 Empréstimos e Financiamentos
+
+2.2.1.01 Empréstimos Nacionais
+
+2.2.1.01.001 ...
+
+2.2.1.02 Empréstimos Estrangeiros
+
+2.2.1.02.001 ...
+
+2.2.1.03 Financiamentos Nacionais
+
+2.2.1.03.001 ...
+
+2.2.1.04 Financiamentos Estrangeiros
+
+2.2.1.04.001 ...
+
+2.2.1.05 Títulos a Pagar
+
+2.3 Patrimônio Líquido
+
+2.3.1 Capital Social
+
+2.3.1.01 Capital Subscrito
+
+2.3.1.01.001 Capital Social
+
+2.3.1.01.002 ...
+
+2.3.1.02 (-) Capital a Integralizar
+
+2.3.1.02.001 (-) ...
+
+2.3.2 Reservas
+
+2.3.2.01 Reservas de Capital
+
+2.3.2.01.001 Correção Monetária do Capital Integralizado
+
+
+
+3. CONTAS DE RESULTADO - CUSTOS E DESPESAS
+
+3.1 Custos de Produção
+
+3.1.1 Custos diretos de Produção
+
+3.1.1.01 Material Aplicado
+
+3.1.1.01.001 Matéria-Prima
+
+3.1.1.01.002 ...
+
+3.1.1.02 Mão De Obra Direta
+
+3.1.1.02.001 Salários e Ordenados
+
+3.1.1.02.002 Pro Labore
+
+3.1.1.02.003 Prêmios e Gratificações
+
+3.1.1.02.004 13º Salário
+
+3.1.1.02.005 Férias
+
+3.1.1.02.006 INSS
+
+3.1.1.02.007 FGTS
+
+3.2 Despesas Operacionais
+
+3.2.1 Despesas com Vendas
+
+3.2.1.01 Despesas com Pessoal
+
+3.2.1.01.001 Salários e Ordenados
+
+3.2.1.01.002 Pro Labore
+
+3.2.1.02.003 Prêmios e Gratificações
+
+3.2.1.02.004 13º Salário
+
+3.2.1.02.005 Férias
+
+3.2.1.02.006 INSS
+
+3.2.1.02.007 FGTS
+
+3.3 Outras Despesas
+
+3.3.1 Outros Resultados Negativos
+
+3.3.1.01 Resultados negativos na Alienação de Investimentos
+
+3.3.1.01.001 Perdas na Alienação de Participações em Coligadas
+
+3.3.1.01.002 ...
+
+3.3.1.02 Resultado Negativo na Alienação do Imobilizado
+
+4. CONTAS DE RESULTADO - RECEITAS
+
+4.1 Receitas Operacionais
+
+4.1.1 Receita Bruta de Venda e Serviços
+
+4.1.1.01 Receita Bruta de Venda de Produtos e Mercadorias
+
+4.1.1.01.001 Venda de Produtos no Mercado Interno
+
+4.1.1.01.002 Venda de Produtos no Mercado Externo
+
+4.1.1.01.003 Venda de Mercadorias Mercado Interno
+
+4.1.1.01.004 Venda de Mercadorias Mercado Externo
+
+4.1.1.01.005 ...
+
+4.1.1.02 Receita de Prestação de Serviços
+
+4.1.1.02.001 Serviços Prestados - Mercado Interno
+
+4.1.1.02.002 Serviços Prestados - Mercado Externo
+
+4.1.1.02.003 ...
+
+4.1.2 (-) Deduções da Receita Bruta
+
+4.1.2.01 (-) Cancelamento e Devoluções
+
+4.1.2.01.001 (-) de vendas de Produtos no Mercado Interno
+
+4.1.2.01.002 ...
+
+4.1.3 Receitas Financeiras
+
+4.1.3.01 Juros e Descontos
+
+4.1.3.01.001 Juros de Aplicações Financeiras
+
+4.1.3.01.002 Juros Ativos
+
+4.2 Outras Receitas
+
+4.2.1 Outros resultados Positivos
+
+4.2.1.01 Resultados Positivos na Alienação de Investimentos
+
+4.2.1.01.001 Lucro na Alienação de Participações em Coligadas
+
+4.2.1.01.002 ...
+
+4.2.1.02 Lucro na Alienação do Imobilizado
+
+57
+
+4.2.1.02.001 Lucros na Alienação de Imóveis
+
+4.2.1.02.002 Lucros na Alienação de Móveis e Utensílios
+
+4.2.1.02.003 ...
+
+4.2.1.03 Resultados de Sinistros com Imobilizado
+
+4.2.1.03.001 Sinistro com Imobilizado
+
+5. CONTAS DE APURAÇÃO
+
+5.1 Custo dos Produtos Vendidos e Serviços Prestados
+
+5.1.1 Custo dos Produtos Vendidos
+
+5.1.1.01 Custo dos Produtos vendidos
+
+5.1.1.01.001 Custo dos Produtos vendidos
+
+5.1.2 Custo dos Serviços Prestados
+
+5.1.2.01 Custo dos Serviços Prestados
+
+5.1.2.01.001 Custo dos Serviços Prestados
+
+5.1.3 Custo das Mercadorias Vendidas
+
+5.1.3.01 Custo das Mercadorias Vendidas
+
+5.1.3.01.001 Custo das Mercadorias Vendidas
+
+5.1.4 Apuração do Resultado do Exercício
+
+5.1.4.01 Apuração do Resultado do Exercício
+
+5.1.4.01.001 Resultado do Exercício
+
+5.1.4.01.002 Ganhos/Perdas na Alienação de Imobilizado
+
+6. CONTAS DE COMPENSAÇÃO
+
+6.1 Contas de Compensação Ativas
+
+6.1.1 Contratos e Empenhos
+
+6.1.1.01 Seguros Contratados
+
+6.1.1.01.001 ...
+
+6.1.2 Riscos e Ônus Patrimoniais
+
+6.1.2.01 Títulos Avalizados
+
+6.1.2.01.001 ...
+
+6.1.3 Operações Com Materiais Próprios
+
+6.1.3.01 Materiais Remetidos para Industrialização
+
+6.1.3.01.001 ...
+
+6.1.4 Operações com Materiais de Terceiros
+
+6.1.4.01 Entradas para Industrialização
+
+6.1.4.01.001 ...
+
+6.2 Contas de Compensação Passivas
+
+6.2.1 Contratos e Empenhos
+
+6.2.1.01 Contratos de Seguro
+
+6.2.1.01.001 ...
+
+6.2.2 Riscos e Ônus Patrimoniais
+
+6.2.2.01 Avais Concedidos
+
+6.2.2.01.001 ...
+
+6.2.2.02 Endosso de Títulos
+
+6.2.2.02.001 ...
