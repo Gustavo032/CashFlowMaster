@@ -349,41 +349,75 @@
 
 <!-- Preset Modal -->
 <div class="modal fade" id="presetModal" tabindex="-1" aria-labelledby="presetModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="presetModalLabel">Gerenciar Presets</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-3">
-                    <label for="preset_name" class="form-label">Nome do Preset</label>
-                    <input type="text" class="form-control" id="preset_name" 
-                           placeholder="ex: Padrão Empresa Comercial">
+                <!-- Save New Preset Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i data-feather="save"></i>
+                            Salvar Configuração Atual
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="preset_name" class="form-label">Nome do Preset</label>
+                            <input type="text" class="form-control" id="preset_name" 
+                                   placeholder="ex: Padrão Empresa Comercial">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="preset_description" class="form-label">Descrição (Opcional)</label>
+                            <textarea class="form-control" id="preset_description" rows="2"
+                                      placeholder="Descrição detalhada do preset"></textarea>
+                        </div>
+                        
+                        <button class="btn btn-primary w-100" onclick="saveCurrentPreset()">
+                            <i data-feather="save"></i>
+                            Salvar Configuração Atual como Preset
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="mb-3">
-                    <button class="btn btn-primary w-100" onclick="saveCurrentPreset()">
-                        <i data-feather="save"></i>
-                        Salvar Configuração Atual
-                    </button>
+                <!-- Load Existing Preset Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i data-feather="upload"></i>
+                            Carregar Preset Existente
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3" id="presets-loading">
+                            <div class="text-center">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Carregando...</span>
+                                </div>
+                                <span class="ms-2">Carregando presets...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 d-none" id="presets-content">
+                            <label for="preset_list" class="form-label">Presets Disponíveis</label>
+                            <div id="preset_list" class="list-group">
+                                <!-- Presets will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="d-none" id="no-presets">
+                            <div class="text-center text-muted">
+                                <i data-feather="package"></i>
+                                <p class="mt-2">Nenhum preset encontrado</p>
+                                <small>Salve sua primeira configuração para criar um preset</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <hr>
-                
-                <div class="mb-3">
-                    <label for="preset_list" class="form-label">Carregar Preset Existente</label>
-                    <select class="form-select" id="preset_list">
-                        <option value="">Selecione um preset</option>
-                        <option value="comercial">Padrão Empresa Comercial</option>
-                        <option value="servicos">Padrão Empresa de Serviços</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-success w-100" onclick="loadPreset()">
-                    <i data-feather="upload"></i>
-                    Carregar Preset Selecionado
-                </button>
             </div>
         </div>
     </div>
@@ -427,27 +461,152 @@ function editMapping(mappingId) {
 }
 
 function saveCurrentPreset() {
-    const presetName = document.getElementById('preset_name').value;
+    const presetName = document.getElementById('preset_name').value.trim();
+    const presetDescription = document.getElementById('preset_description').value.trim();
+    
     if (!presetName) {
         alert('Por favor, informe um nome para o preset');
         return;
     }
     
     if (confirm(`Salvar configuração atual como "${presetName}"?`)) {
-        alert('Funcionalidade de salvamento de preset será implementada em breve');
+        fetch('/mappings/presets/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: presetName,
+                description: presetDescription
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                document.getElementById('preset_name').value = '';
+                document.getElementById('preset_description').value = '';
+                loadPresetsList(); // Refresh the presets list
+            } else {
+                alert('Erro: ' + (data.error || 'Erro desconhecido'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Erro ao salvar preset');
+        });
     }
 }
 
-function loadPreset() {
-    const presetSelected = document.getElementById('preset_list').value;
-    if (!presetSelected) {
-        alert('Por favor, selecione um preset');
-        return;
-    }
-    
-    if (confirm('Carregar o preset selecionado? Isso substituirá a configuração atual.')) {
-        alert('Funcionalidade de carregamento de preset será implementada em breve');
+function loadPreset(presetId, presetName) {
+    if (confirm(`Carregar o preset "${presetName}"? Isso substituirá a configuração atual de mapeamentos.`)) {
+        fetch(`/mappings/presets/load/${presetId}`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                // Reload the page to show new mappings
+                window.location.reload();
+            } else {
+                alert('Erro: ' + (data.error || 'Erro desconhecido'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Erro ao carregar preset');
+        });
     }
 }
+
+function deletePreset(presetId, presetName) {
+    if (confirm(`Tem certeza que deseja excluir o preset "${presetName}"?`)) {
+        fetch(`/mappings/presets/delete/${presetId}`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                loadPresetsList(); // Refresh the presets list
+            } else {
+                alert('Erro: ' + (data.error || 'Erro desconhecido'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Erro ao excluir preset');
+        });
+    }
+}
+
+function loadPresetsList() {
+    const loadingDiv = document.getElementById('presets-loading');
+    const contentDiv = document.getElementById('presets-content');
+    const noPresetsDiv = document.getElementById('no-presets');
+    const presetListDiv = document.getElementById('preset_list');
+    
+    // Show loading
+    loadingDiv.classList.remove('d-none');
+    contentDiv.classList.add('d-none');
+    noPresetsDiv.classList.add('d-none');
+    
+    fetch('/mappings/presets/list')
+        .then(response => response.json())
+        .then(presets => {
+            loadingDiv.classList.add('d-none');
+            
+            if (presets.length === 0) {
+                noPresetsDiv.classList.remove('d-none');
+                return;
+            }
+            
+            // Clear existing presets
+            presetListDiv.innerHTML = '';
+            
+            // Add each preset
+            presets.forEach(preset => {
+                const presetItem = document.createElement('div');
+                presetItem.className = 'list-group-item d-flex justify-content-between align-items-start';
+                
+                presetItem.innerHTML = `
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1">${preset.name}</h6>
+                        <p class="mb-1 text-muted small">${preset.description || 'Sem descrição'}</p>
+                        <small class="text-muted">
+                            ${preset.mappings_count} mapeamentos • 
+                            Criado em: ${preset.created_at ? new Date(preset.created_at).toLocaleDateString('pt-BR') : 'Data não informada'}
+                        </small>
+                    </div>
+                    <div class="btn-group-vertical btn-group-sm">
+                        <button class="btn btn-outline-success btn-sm" onclick="loadPreset('${preset.id}', '${preset.name}')" title="Carregar">
+                            <i data-feather="upload" style="width: 14px; height: 14px;"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deletePreset('${preset.id}', '${preset.name}')" title="Excluir">
+                            <i data-feather="trash-2" style="width: 14px; height: 14px;"></i>
+                        </button>
+                    </div>
+                `;
+                
+                presetListDiv.appendChild(presetItem);
+            });
+            
+            // Re-initialize feather icons for new content
+            feather.replace();
+            
+            contentDiv.classList.remove('d-none');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loadingDiv.classList.add('d-none');
+            noPresetsDiv.classList.remove('d-none');
+        });
+}
+
+// Load presets list when modal is shown
+document.getElementById('presetModal').addEventListener('show.bs.modal', function () {
+    loadPresetsList();
+});
 </script>
 {% endblock %}

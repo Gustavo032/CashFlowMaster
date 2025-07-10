@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import uuid
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, flash, jsonify, send_file
 from werkzeug.utils import secure_filename
@@ -451,6 +452,112 @@ def get_mapping(mapping_id):
         
     except Exception as e:
         logger.error(f"Error getting mapping: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/mappings/presets/save', methods=['POST'])
+def save_mapping_preset():
+    """Save current mappings as a preset"""
+    try:
+        preset_name = request.json.get('name')
+        if not preset_name:
+            return jsonify({'error': 'Nome do preset é obrigatório'}), 400
+        
+        # Load current mappings
+        current_mappings = FileHandler.load_accounting_mappings()
+        
+        # Load existing presets
+        presets = FileHandler.load_mapping_presets()
+        
+        # Create new preset
+        new_preset = {
+            'id': str(uuid.uuid4()),
+            'name': preset_name,
+            'description': request.json.get('description', ''),
+            'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'mappings': [mapping.to_dict() for mapping in current_mappings]
+        }
+        
+        # Add to presets list
+        presets.append(new_preset)
+        
+        # Save presets
+        FileHandler.save_mapping_presets(presets)
+        
+        return jsonify({'success': True, 'message': f'Preset "{preset_name}" salvo com sucesso!'})
+        
+    except Exception as e:
+        logger.error(f"Error saving preset: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/mappings/presets/load/<preset_id>', methods=['POST'])
+def load_mapping_preset(preset_id):
+    """Load a preset and replace current mappings"""
+    try:
+        # Load presets
+        presets = FileHandler.load_mapping_presets()
+        preset = next((p for p in presets if p['id'] == preset_id), None)
+        
+        if not preset:
+            return jsonify({'error': 'Preset não encontrado'}), 404
+        
+        # Convert preset mappings back to AccountingMapping objects
+        new_mappings = []
+        for mapping_data in preset['mappings']:
+            mapping = AccountingMapping.from_dict(mapping_data)
+            new_mappings.append(mapping)
+        
+        # Save as current mappings
+        FileHandler.save_accounting_mappings(new_mappings)
+        
+        return jsonify({'success': True, 'message': f'Preset "{preset["name"]}" carregado com sucesso!'})
+        
+    except Exception as e:
+        logger.error(f"Error loading preset: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/mappings/presets/list')
+def list_mapping_presets():
+    """List available presets"""
+    try:
+        presets = FileHandler.load_mapping_presets()
+        
+        # Return only essential info for listing
+        preset_list = []
+        for preset in presets:
+            preset_list.append({
+                'id': preset['id'],
+                'name': preset['name'],
+                'description': preset.get('description', ''),
+                'created_at': preset.get('created_at', ''),
+                'mappings_count': len(preset.get('mappings', []))
+            })
+        
+        return jsonify(preset_list)
+        
+    except Exception as e:
+        logger.error(f"Error listing presets: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/mappings/presets/delete/<preset_id>', methods=['POST'])
+def delete_mapping_preset(preset_id):
+    """Delete a preset"""
+    try:
+        presets = FileHandler.load_mapping_presets()
+        
+        # Find and remove preset
+        preset_to_delete = next((p for p in presets if p['id'] == preset_id), None)
+        if not preset_to_delete:
+            return jsonify({'error': 'Preset não encontrado'}), 404
+        
+        presets = [p for p in presets if p['id'] != preset_id]
+        
+        # Save updated presets
+        FileHandler.save_mapping_presets(presets)
+        
+        return jsonify({'success': True, 'message': f'Preset "{preset_to_delete["name"]}" excluído com sucesso!'})
+        
+    except Exception as e:
+        logger.error(f"Error deleting preset: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/export')
