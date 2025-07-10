@@ -1,0 +1,612 @@
+Sistema de Automação Contábil de Extratos Bancários (CashFlowMaster) - Revisado e Aprimorado
+
+1. Visão Geral do Sistema
+
+O CashFlowMaster é uma aplicação web local (Flask em Python) projetada para automatizar o processo de importação de extratos bancários e o mapeamento direto de cada transação a um par de contas contábeis (débito e crédito) e um histórico padrão, essencial para a importação em softwares de contabilidade. Ele elimina a necessidade de lançamentos manuais, permitindo que empresas e contadores economizem tempo e aumentem a precisão dos registros financeiros. O sistema prioriza a facilidade de uso, a adaptabilidade a diferentes bancos e a personalização de regras por parte do usuário. Não utiliza banco de dados externo, armazenando todos os dados localmente em arquivos JSON/CSV.
+
+2. Funcionalidades Principais
+
+2.1. Importação de Extratos Bancários
+
+Formatos Suportados:
+
+PDF (Foco Principal):
+
+Prioridade 1 (PDF Editável/Não Criptografado): Tentar extrair texto diretamente usando pdfplumber ou PyMuPDF (fitz).
+
+Prioridade 2 (PDF Criptografado/Imagem/Falha Extração): Aplicar OCR com pytesseract.
+
+Prioridade 3 (Falha Parcial OCR/Heurística): Tentar converter o PDF em CSV (usando heurísticas de linha/posição, como análise de layout de tabela) e importar o CSV resultante.
+
+Fallback: Registrar erro no log para revisão manual se todas as tentativas falharem.
+
+OFX: Importar diretamente.
+
+CSV: Importar diretamente, permitindo mapeamento de colunas pelo usuário, se necessário.
+
+Seleção de Template por Banco:
+
+Permitir ao usuário selecionar um "template" (regra de leitura) específico para cada banco (ex: Bradesco, Itaú, Banco do Brasil) durante o upload.
+
+Detecção Automática: Tentar detectar o banco automaticamente pelo conteúdo do PDF/OFX/CSV e sugerir/aplicar o template padrão associado.
+
+Armazenamento de Templates: Templates de leitura são arquivos JSON (ex: data/templates/bradesco.json).
+
+2.2. Gerenciamento de Templates de Leitura
+
+Interface Dedicada: Página "Templates" para:
+
+Visualizar uma lista de templates existentes.
+
+Criar novos templates via formulário web (definindo regex para data, valor, descrição, modo de leitura "texto"/"ocr", mapeamento de colunas para CSV).
+
+Editar templates existentes.
+
+Excluir templates.
+
+Estrutura de Template (JSON):
+
+
+
+JSON
+
+
+
+{
+
+  "banco": "Nome do Banco",
+
+  "formato": "pdf", // "ofx", "csv"
+
+  "regex_data": "\\d{2}/\\d{2}/\\d{4}",
+
+  "regex_valor": "-?\\d{1,3}(?:\\.?\\d{3})*,\\d{2}", // Ex: -1.234,56
+
+  "regex_descricao": ".+", // Esta regex DEVE capturar APENAS a descrição da transação
+
+  "modo_leitura": "texto", // "ocr", "csv_heuristico"
+
+  "colunas_csv": { // Apenas para modo_leitura "csv_heuristico" ou CSV direto
+
+    "data": 0,
+
+    "descricao": 1, // Garantir que esta é a COLUNA DA DESCRIÇÃO PURA
+
+    "valor": 2,
+
+    "saldo": 3
+
+  },
+
+  "linhas_ignoradas_topo": 0, // Número de linhas a ignorar no cabeçalho
+
+  "linhas_ignoradas_rodape": 0 // Número de linhas a ignorar no rodapé
+
+}
+
+Ponto Crítico: A IA deve garantir que a regex_descricao e o mapeamento colunas_csv.descricao isolem apenas o texto que descreve a transação, sem incluir a data, o valor ou outras informações que já são capturadas em campos dedicados. O objetivo é ter uma descricao_original limpa.
+
+2.3. Mapeamento Automático de Transações (o que antes chamávamos de "Categorização")
+
+Modelo de Dados da Transação:
+
+
+
+Python
+
+
+
+{
+
+  "id": "uuid_gerado",
+
+  "data": "AAAA-MM-DD",
+
+  "descricao_original": "Descrição completa da movimentação no extrato (limpa, sem data/valor repetidos)",
+
+  "descricao_normalizada": "descricao completa normalizada (para busca/comparacao)",
+
+  "valor": -125.40,
+
+  "tipo_movimentacao": "Débito", // "Crédito"
+
+  "banco": "Nome do Banco",
+
+  "rotulo_contabil": "Nome Amigável para o Par de Contas", // Ex: "Despesa com Salários", "Receita de Vendas"
+
+  "conta_debito": "Código da Conta Débito",
+
+  "conta_credito": "Código da Conta Crédito",
+
+  "historico_contabil": "Texto a ser usado no histórico do lançamento contábil (pode ser descricao_original ou padronizado)",
+
+  "revisado_manualmente": false // Flag para indicar se o mapeamento foi alterado pelo usuário
+
+}
+
+Mudança Chave: Introduzimos rotulo_contabil para o nome amigável (o que era "categoria") e historico_contabil para o texto que vai para o sistema contábil.
+
+Lógica de Mapeamento (Ordem de Prioridade):
+
+Regras Personalizadas do Usuário (Maior Prioridade):
+
+Verificar o arquivo data/regras_personalizadas.json.
+
+Se a descricao_normalizada (e opcionalmente o valor) corresponder a uma regra personalizada, aplicar o rotulo_contabil e o par de conta_debito / conta_credito e historico_contabil definidos nela.
+
+Mapeamentos Padrão (Exceções):
+
+Para cada mapeamento em data/mapeamentos_contabeis.json, verificar se a descricao_normalizada contém alguma das excecoes. Se sim, esse mapeamento é descartado para a transação.
+
+Mapeamentos Padrão (regex_avancado):
+
+Iterar pelos mapeamentos em data/mapeamentos_contabeis.json.
+
+Se tipo_transacao do mapeamento (entrada/saida) for compatível com tipo_movimentacao da transação, tentar corresponder descricao_normalizada com regex_avancado.
+
+Mapeamentos Padrão (palavras_chave de Sub-Mapeamentos):
+
+Se regex_avancado não corresponder, tentar corresponder palavras_chave dos sub_mapeamentos (se existirem).
+
+Mapeamentos Padrão (palavras_chave do Mapeamento Principal):
+
+Se nenhum sub-mapeamento corresponder, tentar corresponder palavras_chave do mapeamento principal.
+
+Sistema de Pontuação: Se múltiplos mapeamentos corresponderem, usar um sistema de pontuação (ex: 3 pontos para regex_avancado, 2 para palavras_chave de sub-mapeamento, 1 para palavras_chave do mapeamento principal). O mapeamento com maior pontuação é selecionado.
+
+Normalização de Texto: Todas as comparações devem ser feitas após normalizar tanto a descrição da transação quanto as palavras-chave/regex (minúsculas, sem acentos, sem caracteres especiais desnecessários).
+
+2.4. Gerenciamento de Mapeamentos Contábeis Padrão
+
+Armazenamento: Arquivo data/mapeamentos_contabeis.json.
+
+Mudança Chave: Renomeamos categorias.json para mapeamentos_contabeis.json para refletir o foco em atrelar contas.
+
+Estrutura de Mapeamento (JSON):
+
+
+
+JSON
+
+
+
+[
+
+  {
+
+    "id": "uuid_mapeamento",
+
+    "rotulo_contabil": "Nome Amigável para o Mapeamento", // Ex: "Despesa com Salários"
+
+    "descricao_longa": "Descrição detalhada deste mapeamento contábil.",
+
+    "tipo_transacao": "saida", // "entrada", "neutro" (para transferências internas)
+
+    "palavras_chave": ["termo1", "termo2"],
+
+    "regex_avancado": "regex_para_padroes_complexos",
+
+    "conta_debito": "3.2.1.01.001",
+
+    "conta_credito": "1.1.1.02.001",
+
+    "historico_contabil_padrao": "Pagamento de salários da competência", // Histórico sugerido
+
+    "excecoes": ["termo_que_exclui_este_mapeamento"],
+
+    "sub_mapeamentos": [
+
+      {
+
+        "id": "uuid_sub_mapeamento",
+
+        "rotulo_contabil": "Nome da Sub-Mapeamento",
+
+        "palavras_chave": ["subtermo1"],
+
+        "conta_debito": "3.2.1.01.002",
+
+        "conta_credito": "1.1.1.02.001",
+
+        "historico_contabil_padrao": "Pagamento de pro-labore"
+
+      }
+
+    ]
+
+  }
+
+]
+
+Interface: Página "Mapeamentos Contábeis" (renomear de "Categorias") para:
+
+Listar, criar, editar e excluir mapeamentos e sub-mapeamentos.
+
+Gerenciar palavras-chave, regex, par de contas contábeis (débito/crédito), histórico padrão e exceções para cada mapeamento.
+
+2.5. Gerenciamento de Regras Personalizadas (do Usuário)
+
+Armazenamento: Arquivo data/regras_personalizadas.json.
+
+Estrutura de Regra Personalizada (JSON):
+
+
+
+JSON
+
+
+
+[
+
+  {
+
+    "id": "uuid_regra",
+
+    "termo_chave": "PIX PARA GUSTAVO", // Pode ser uma regex simples se o usuário avançar
+
+    "corresponde_exatamente": true, // false para 'contém'
+
+    "considerar_valor": true,
+
+    "valor_exato": -250.00, // Ou "valor_min": X, "valor_max": Y
+
+    "tipo_movimentacao_regra": "saida", // "entrada", "ambos"
+
+    "rotulo_contabil_aplicar": "Reembolso Despesa de Viagem",
+
+    "conta_debito_aplicar": "3.1.1.05.001",
+
+    "conta_credito_aplicar": "1.1.1.02.001",
+
+    "historico_contabil_aplicar": "Reembolso despesa de viagem para Gustavo",
+
+    "data_criacao": "AAAA-MM-DD"
+
+  }
+
+]
+
+Interface: Gerenciada principalmente através da página "Transações" e, opcionalmente, uma lista separada para edição avançada.
+
+2.6. Visualização e Revisão de Transações
+
+Página "Transações":
+
+Tabela paginada com todas as transações importadas.
+
+Colunas: Data, Descrição Original (LIMPA), Valor, Tipo, Banco, Rótulo Contábil, Conta Débito, Conta Crédito, Histórico Contábil, Revisado Manualmente.
+
+Filtros: Por data, banco, rótulo contábil (mapeado/não mapeado), valor (faixa).
+
+Edição Direta: Permitir clicar em uma transação para editar seu rótulo contábil, conta débito, conta crédito e histórico contábil.
+
+Reaplicação de Regras: Ao editar uma transação manualmente:
+
+Apresentar checkbox: "Criar e aplicar regra para transações futuras/semelhantes?"
+
+Se marcado, oferecer opções (via modal/dropdown):
+
+"Descrições exatamente iguais ('PIX PARA GUSTAVO')"
+
+"Descrições que contenham ('PIX PARA GUSTAVO')"
+
+"Descrições exatamente iguais E com o mesmo valor"
+
+Com base na escolha, gerar uma nova regra em regras_personalizadas.json e reaplicar o mapeamento a todas as transações existentes que se encaixem nessa nova regra.
+
+Atualizar o campo revisado_manualmente para true para a transação editada.
+
+Botão "Recategorizar Tudo": Permite ao usuário reiniciar o processo de mapeamento automático para todas as transações atualmente carregadas, aplicando as regras atualizadas. Útil após edições de mapeamentos ou regras.
+
+Botão "Apagar Todas as Transações": Remove todas as transações da memória e do arquivo data/transacoes.json. Exige uma confirmação do usuário (ex: um modal).
+
+2.7. Presets de Mapeamentos Contábeis
+
+Objetivo: Permitir que o usuário salve e carregue conjuntos de configurações de mapeamentos e suas contas associadas (planos de contas completos ou parciais para diferentes cenários/clientes).
+
+Armazenamento: Arquivo data/presets_mapeamentos.json (renomeado de presets_categorias.json).
+
+
+
+JSON
+
+
+
+[
+
+  {
+
+    "nome_preset": "Padrão Empresa X (Plano de Contas Y)",
+
+    "mapeamentos": [
+
+      {
+
+        "rotulo_contabil": "Salários e Ordenados (Produção)",
+
+        "conta_debito": "3.1.1.02.001",
+
+        "conta_credito": "1.1.1.02.001",
+
+        "historico_contabil_padrao": "Pagamento de salários - Mão de Obra Direta"
+
+      },
+
+      {
+
+        "rotulo_contabil": "Receita de Venda de Produtos",
+
+        "conta_debito": "1.1.1.02.001",
+
+        "conta_credito": "4.1.1.01.001",
+
+        "historico_contabil_padrao": "Receita de venda de produtos"
+
+      }
+
+      // ... outros mapeamentos e suas contas para este preset
+
+    ]
+
+  }
+
+]
+
+Interface:
+
+Na página "Mapeamentos Contábeis", adicionar botões:
+
+"Salvar Preset Atual": Salva as configurações atuais de mapeamentos_contabeis.json em um novo preset ou atualiza um existente. Permite dar um nome ao preset.
+
+"Carregar Preset": Um dropdown com os nomes dos presets salvos. Ao selecionar e clicar em "Carregar", o sistema sobrescreve o mapeamentos_contabeis.json atual com as contas do preset selecionado e dispara a recategorização de todas as transações (como o botão "Recategorizar Tudo"). Exige confirmação.
+
+2.8. Exportação de Dados
+
+Problema a Corrigir: O botão de exportação (export.html) está carregando infinitamente.
+
+Ajuste: O Flask deve enviar o arquivo e o JavaScript no frontend deve garantir que o estado de "loading" seja removido e o botão retorne ao normal assim que o download for iniciado/completado.
+
+Formatos Suportados:
+
+.csv (planilha).
+
+.txt (para importação em sistemas contábeis).
+
+.json (estrutura completa das transações).
+
+Página "Exportar":
+
+Permitir ao usuário selecionar o período ou todas as transações.
+
+Escolhe o formato de exportação (CSV, TXT, JSON) e o layout específico (Contimatic, Domínio, etc.).
+
+Layouts de Exportação (Configuráveis):
+
+Arquivos JSON (ex: data/layouts_exportacao.json) que definem colunas, ordem, delimitadores e formatos de dados para cada sistema contábil.
+
+Exemplo:
+
+
+
+JSON
+
+
+
+[
+
+  {
+
+    "nome": "Contimatic Padrão",
+
+    "formato": "txt",
+
+    "delimitador": "|",
+
+    "colunas": [
+
+      {"campo": "data", "nome_coluna": "DTLANC", "tipo": "data", "formato": "%Y%m%d"},
+
+      {"campo": "conta_debito", "nome_coluna": "CTADEB", "tipo": "texto", "tamanho_fixo": 10, "preenchimento": "espacos"},
+
+      {"campo": "conta_credito", "nome_coluna": "CTACRED", "tipo": "texto", "tamanho_fixo": 10, "preenchimento": "espacos"},
+
+      {"campo": "valor", "nome_coluna": "VRLANC", "tipo": "numero", "formato": "%.2f", "separador_decimal": ""},
+
+      {"campo": "historico_contabil", "nome_coluna": "HIST", "tipo": "texto", "tamanho_fixo": 50, "preenchimento": "espacos"}
+
+    ]
+
+  }
+
+]
+
+Ao exportar, o sistema lê o layout escolhido e gera o arquivo de acordo.
+
+Local de Exportação: Arquivos salvos na pasta /output/ com nomes como extrato_[banco]_[data_geracao].csv ou lancamentos_[data_geracao].txt.
+
+2.9. Logs e Erros
+
+Página "Logs": Visualizar logs de erros de importação, falhas de OCR, PDFs criptografados, etc.
+
+Arquivo de Log: logs/erros.log (consolidando erros_ocr.log e outros logs relevantes).
+
+3. Estrutura de Arquivos e Pastas
+
+Bash
+
+
+
+cashflowmaster/
+
+├── app.py                     # Script principal Flask
+
+├── requirements.txt           # Dependências Python
+
+├── templates/                 # Arquivos HTML (Jinja2)
+
+│   ├── index.html
+
+│   ├── import.html
+
+│   ├── transactions.html
+
+│   ├── mapeamentos_contabeis.html # Renomeado de categories.html
+
+│   ├── templates_config.html
+
+│   ├── export.html
+
+│   └── logs.html
+
+├── static/                    # Arquivos CSS, JS, Imagens
+
+│   ├── css/
+
+│   ├── js/
+
+│   └── img/
+
+├── data/                      # Armazenamento local de dados
+
+│   ├── transacoes.json        # Todas as transações importadas
+
+│   ├── mapeamentos_contabeis.json # Definição dos mapeamentos contábeis (antigo categorias.json)
+
+│   ├── regras_personalizadas.json # Regras de mapeamento criadas pelo usuário
+
+│   ├── presets_mapeamentos.json # Presets de mapeamentos e valores (antigo presets_categorias.json)
+
+│   ├── templates/             # Templates de leitura por banco
+
+│   │   ├── itau.json
+
+│   │   ├── bradesco.json
+
+│   │   └── ...
+
+│   ├── layouts_exportacao.json # Definição dos layouts de exportação
+
+│   └── banks.json             # (Opcional) Lista de bancos para detecção automática
+
+├── output/                    # Arquivos exportados
+
+│   ├── extrato_2025-07-10.csv
+
+│   └── lancamentos_contabeis_2025-07-10.txt
+
+└── logs/                      # Arquivos de log
+
+    └── erros.log
+
+4. Fluxo Completo de Uso (UX)
+
+Acesso: Usuário abre o navegador e acessa localhost:5000.
+
+Página Inicial (/): Boas-vindas e opção para "Importar Extrato".
+
+Importar Extrato (/import):
+
+Usuário seleciona um ou mais arquivos (PDF/OFX/CSV).
+
+Pode selecionar um template de banco manualmente ou confiar na detecção automática.
+
+Clica em "Upload".
+
+Processamento: O sistema executa a lógica de importação (PDF OCR/texto, OFX, CSV) e mapeamento automático.
+
+Redirecionamento: Após o processamento, o usuário é redirecionado para a página "Transações".
+
+Visualizar Transações (/transactions):
+
+A tabela de transações é exibida. Transações "Não Mapeadas" ou "Revisadas Manualmente" podem ter destaque visual.
+
+Usuário pode aplicar filtros para encontrar transações específicas.
+
+Edição: Usuário clica em uma transação para abrir um modal/formulário de edição.
+
+No modal, ele pode mudar o rótulo contábil, conta débito, conta crédito e histórico contábil.
+
+Funcionalidade de Reaplicação: Ao salvar a edição, o sistema pergunta se quer criar uma regra. Se sim, exibe opções de "similaridade".
+
+A tabela é atualizada em tempo real com as alterações.
+
+Botões de Ação: "Recategorizar Tudo" e "Apagar Todas as Transações" (com confirmação).
+
+Gerenciar Mapeamentos Contábeis (/mapeamentos_contabeis):
+
+Usuário acessa esta página para ver os mapeamentos existentes.
+
+Pode adicionar um novo mapeamento, editar os detalhes de um existente (palavras-chave, contas, regex, histórico padrão), ou excluí-lo.
+
+Funcionalidade de Presets: Botões para "Salvar Preset Atual" (com nome) e "Carregar Preset" (dropdown de seleção, com confirmação e gatilho de recategorização).
+
+Gerenciar Templates (/templates):
+
+Usuário acessa para criar ou ajustar os templates de leitura para diferentes bancos, garantindo que novos extratos sejam lidos corretamente.
+
+Exportar Dados (/export):
+
+Usuário seleciona o período ou todas as transações.
+
+Escolhe o formato de exportação (CSV, TXT, JSON) e o layout específico (Contimatic, Domínio, etc.).
+
+Clica em "Gerar Relatório" e o arquivo é baixado. O loading do botão deve ser desativado após o início do download.
+
+Visualizar Logs (/logs):
+
+Página simples para exibir mensagens de erro ou logs importantes para depuração.
+
+5. Aparência e Design (UI/UX)
+
+Layout Responsivo: A aplicação deve ser utilizável em diferentes tamanhos de tela (desktop, tablet).
+
+Estilo Limpo e Moderno: Cores suaves, tipografia legível, espaçamento adequado. Usar um framework CSS leve (ex: Bootstrap 5, Tailwind CSS ou Bulma) pode ser útil.
+
+Navegação Clara: Menu de navegação superior ou lateral com links para "Importar Extrato", "Transações", "Mapeamentos Contábeis", "Templates", "Exportar", "Logs".
+
+Feedback Visual:
+
+Indicadores de carregamento durante operações de importação/processamento.
+
+Mensagens de sucesso/erro claras (toasts, alertas).
+
+Realce visual para transações "Não Mapeadas" ou "Revisadas Manualmente" na tabela.
+
+Formulários Intuitivos: Campos bem rotulados, validação de entrada, placeholders.
+
+Tabelas Interativas: Ordenação por coluna, paginação, filtros visíveis e fáceis de usar.
+
+Ícones: Uso de ícones para ações (editar, excluir, importar) para melhor clareza.
+
+6. Dependências Tecnológicas (Python)
+
+Flask: Framework web principal.
+
+pdfplumber: Extração de texto de PDFs editáveis.
+
+PyMuPDF (fitz): Alternativa para extração de PDF.
+
+pytesseract: OCR para PDFs de imagem.
+
+Pillow: Dependência para pytesseract (manipulação de imagem).
+
+pandas: Manipulação de dados (CSV, tabelas, etc.).
+
+uuid: Geração de IDs únicos para transações/mapeamentos/regras.
+
+json, csv: Leitura/escrita de arquivos de dados.
+
+re: Expressões regulares.
+
+unicodedata: Normalização de texto.
+
+Werkzeug: Para lidar com uploads de arquivos.
+
+
+
+7. Referência de Plano de Contas Contábeis
+
+O sistema deve utilizar o seguinte plano de contas como base para preencher e validar os conta_debito e conta_credito nos mapeamentos_contabeis.json e nos presets_mapeamentos.json. Ao gerar exemplos de mapeamentos padrão, priorize as contas mais detalhadas sempre que possível (ex: 1.1.1.01.001 Caixa Geral em vez de apenas 1.1.1 Ativo Circulante).
+
+
+
