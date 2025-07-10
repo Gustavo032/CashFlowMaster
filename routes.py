@@ -239,6 +239,67 @@ def clear_transactions():
     
     return redirect(url_for('transactions'))
 
+@app.route('/transactions/remap_selected', methods=['POST'])
+def remap_selected_transactions():
+    """Remap selected transactions"""
+    try:
+        data = request.get_json()
+        transaction_ids = data.get('transaction_ids', [])
+        
+        if not transaction_ids:
+            return jsonify({'error': 'Nenhuma transação selecionada'}), 400
+        
+        transactions = FileHandler.load_transactions()
+        mapper = TransactionMapper()
+        
+        updated_count = 0
+        for transaction in transactions:
+            if transaction.id in transaction_ids and not transaction.revisado_manualmente:
+                mapped_transaction = mapper.map_transaction(transaction)
+                transaction.rotulo_contabil = mapped_transaction.rotulo_contabil
+                transaction.conta_debito = mapped_transaction.conta_debito
+                transaction.conta_credito = mapped_transaction.conta_credito
+                transaction.historico_contabil = mapped_transaction.historico_contabil
+                updated_count += 1
+        
+        FileHandler.save_transactions(transactions)
+        
+        return jsonify({
+            'success': True, 
+            'message': f'{updated_count} transações remapeadas com sucesso!'
+        })
+        
+    except Exception as e:
+        logger.error(f"Error remapping selected transactions: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/transactions/delete_selected', methods=['POST'])
+def delete_selected_transactions():
+    """Delete selected transactions"""
+    try:
+        data = request.get_json()
+        transaction_ids = data.get('transaction_ids', [])
+        
+        if not transaction_ids:
+            return jsonify({'error': 'Nenhuma transação selecionada'}), 400
+        
+        transactions = FileHandler.load_transactions()
+        
+        # Filter out selected transactions
+        remaining_transactions = [t for t in transactions if t.id not in transaction_ids]
+        deleted_count = len(transactions) - len(remaining_transactions)
+        
+        FileHandler.save_transactions(remaining_transactions)
+        
+        return jsonify({
+            'success': True, 
+            'message': f'{deleted_count} transações excluídas com sucesso!'
+        })
+        
+    except Exception as e:
+        logger.error(f"Error deleting selected transactions: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/templates')
 def templates():
     """Manage bank templates"""

@@ -594,5 +594,53 @@
     "historico_contabil_padrao": "Ignorar - Saldo informativo",
     "excecoes": [],
     "sub_mapeamentos": []
+  },
+  {
+    "id": "map_036",
+    "rotulo_contabil": "Pagamento de Salário",
+    "descricao_longa": "Pagamento de salário aos funcionários",
+    "tipo_transacao": "saida",
+    "palavras_chave": [
+      "pagto salario",
+      "pagamento salario"
+    ],
+    "regex_avancado": "",
+    "conta_debito": "3.1.1.02.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Pagamento de salário",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_037",
+    "rotulo_contabil": "Adiantamento Salarial",
+    "descricao_longa": "Pagamento de adiantamento salarial",
+    "tipo_transacao": "saida",
+    "palavras_chave": [
+      "pagto adiantamento sa",
+      "adiantamento salarial"
+    ],
+    "regex_avancado": "",
+    "conta_debito": "1.1.2.01.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Adiantamento salarial",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_038",
+    "rotulo_contabil": "Rescisão Contratual",
+    "descricao_longa": "Pagamento de rescisão contratual",
+    "tipo_transacao": "saida",
+    "palavras_chave": [
+      "pagto rescisao",
+      "rescisao contra"
+    ],
+    "regex_avancado": "",
+    "conta_debito": "3.1.1.02.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Rescisão contratual",
+    "excecoes": [],
+    "sub_mapeamentos": []
   }
 ]

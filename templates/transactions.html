@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}Transações - CashFlowMaster{% endblock %}
@@ -14,6 +15,14 @@
                         Remapear Tudo
                     </button>
                 </form>
+                <button type="button" class="btn btn-warning" id="remapSelected" style="display: none;" onclick="remapSelectedTransactions()">
+                    <i data-feather="refresh-cw"></i>
+                    Remapear Selecionadas
+                </button>
+                <button type="button" class="btn btn-danger" id="deleteSelected" style="display: none;" onclick="deleteSelectedTransactions()">
+                    <i data-feather="trash-2"></i>
+                    Excluir Selecionadas
+                </button>
                 <form method="POST" action="{{ url_for('clear_transactions') }}" class="d-inline">
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Apagar todas as transações? Esta ação não pode ser desfeita.')">
                         <i data-feather="trash-2"></i>
@@ -94,18 +103,31 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">
-                    Lista de Transações
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title">
+                        Lista de Transações
+                        {% if transactions %}
+                            <span class="badge bg-secondary">{{ transactions|length }}</span>
+                        {% endif %}
+                    </h5>
                     {% if transactions %}
-                        <span class="badge bg-secondary">{{ transactions|length }}</span>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="selectAll">
+                            <label class="form-check-label" for="selectAll">
+                                Selecionar Todas
+                            </label>
+                        </div>
                     {% endif %}
-                </h5>
+                </div>
 
                 {% if transactions %}
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
+                                    <th width="30">
+                                        <input type="checkbox" id="selectAllHeader" class="form-check-input">
+                                    </th>
                                     <th>Data</th>
                                     <th>Descrição</th>
                                     <th>Valor</th>
@@ -120,10 +142,25 @@
                             <tbody>
                                 {% for transaction in transactions %}
                                     <tr>
+                                        <td>
+                                            <input type="checkbox" class="form-check-input transaction-checkbox" 
+                                                   value="{{ transaction.id }}" onchange="updateBulkButtons()">
+                                        </td>
                                         <td>{{ transaction.data }}</td>
                                         <td>
                                             <span title="{{ transaction.descricao_original }}">
-                                                {{ transaction.descricao_original[:40] }}{% if transaction.descricao_original|length > 40 %}...{% endif %}
+                                                {% set parts = transaction.descricao_original.split(' ') %}
+                                                {% if parts|length > 1 and parts[0].split('/')|length == 3 %}
+                                                    {% set desc_parts = transaction.descricao_original.split(' ', 1) %}
+                                                    {% if desc_parts|length > 1 %}
+                                                        <small class="text-muted">{{ desc_parts[0] }}</small><br>
+                                                        {{ desc_parts[1][:50] }}{% if desc_parts[1]|length > 50 %}...{% endif %}
+                                                    {% else %}
+                                                        {{ transaction.descricao_original[:50] }}{% if transaction.descricao_original|length > 50 %}...{% endif %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ transaction.descricao_original[:50] }}{% if transaction.descricao_original|length > 50 %}...{% endif %}
+                                                {% endif %}
                                             </span>
                                         </td>
                                         <td class="{% if transaction.valor < 0 %}text-danger{% else %}text-success{% endif %}">
@@ -131,7 +168,9 @@
                                         </td>
                                         <td>{{ transaction.banco }}</td>
                                         <td>
-                                            {% if transaction.rotulo_contabil %}
+                                            {% if transaction.rotulo_contabil == 'IGNORAR' %}
+                                                <span class="badge bg-warning">IGNORAR</span>
+                                            {% elif transaction.rotulo_contabil %}
                                                 <span class="badge bg-success">{{ transaction.rotulo_contabil }}</span>
                                             {% else %}
                                                 <span class="badge bg-secondary">Não mapeado</span>
@@ -242,14 +281,19 @@
 <script>
 function editTransaction(transactionId) {
     // Get transaction data from the table row
-    const row = document.querySelector(`button[onclick="editTransaction('${transactionId}')"]`).closest('tr');
+    const row = document.querySelector(`input[value="${transactionId}"]`).closest('tr');
     const cells = row.querySelectorAll('td');
 
+    // Extract clean category text (remove badges)
+    const categoryCell = cells[5];
+    const categoryBadge = categoryCell.querySelector('.badge');
+    const categoryText = categoryBadge ? categoryBadge.textContent.trim() : '';
+
     // Fill the form
-    document.getElementById('rotulo_contabil').value = cells[4].textContent.trim();
-    document.getElementById('conta_debito').value = cells[5].textContent.trim();
-    document.getElementById('conta_credito').value = cells[6].textContent.trim();
-    document.getElementById('historico_contabil').value = cells[1].getAttribute('title') || cells[1].textContent.trim();
+    document.getElementById('rotulo_contabil').value = categoryText === 'Não mapeado' || categoryText === 'IGNORAR' ? '' : categoryText;
+    document.getElementById('conta_debito').value = cells[6].textContent.trim();
+    document.getElementById('conta_credito').value = cells[7].textContent.trim();
+    document.getElementById('historico_contabil').value = cells[2].getAttribute('title') || cells[2].textContent.trim();
 
     // Set form action
     document.getElementById('editForm').action = `/transactions/edit/${transactionId}`;
@@ -263,5 +307,105 @@ function editTransaction(transactionId) {
 document.getElementById('create_rule').addEventListener('change', function() {
     document.getElementById('rule_options').style.display = this.checked ? 'block' : 'none';
 });
+
+// Bulk selection functionality
+document.getElementById('selectAll').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.transaction-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+    updateBulkButtons();
+});
+
+document.getElementById('selectAllHeader').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.transaction-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+    updateBulkButtons();
+});
+
+function updateBulkButtons() {
+    const selectedCheckboxes = document.querySelectorAll('.transaction-checkbox:checked');
+    const remapBtn = document.getElementById('remapSelected');
+    const deleteBtn = document.getElementById('deleteSelected');
+    
+    if (selectedCheckboxes.length > 0) {
+        remapBtn.style.display = 'inline-block';
+        deleteBtn.style.display = 'inline-block';
+    } else {
+        remapBtn.style.display = 'none';
+        deleteBtn.style.display = 'none';
+    }
+}
+
+function getSelectedTransactionIds() {
+    const selectedCheckboxes = document.querySelectorAll('.transaction-checkbox:checked');
+    return Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+}
+
+function remapSelectedTransactions() {
+    const selectedIds = getSelectedTransactionIds();
+    if (selectedIds.length === 0) {
+        alert('Nenhuma transação selecionada');
+        return;
+    }
+    
+    if (confirm(`Remapear ${selectedIds.length} transação(ões) selecionada(s)?`)) {
+        // Send AJAX request to remap selected transactions
+        fetch('/transactions/remap_selected', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                transaction_ids: selectedIds
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Erro ao remapear transações: ' + data.error);
+            }
+        })
+        .catch(error => {
+            alert('Erro ao remapear transações: ' + error);
+        });
+    }
+}
+
+function deleteSelectedTransactions() {
+    const selectedIds = getSelectedTransactionIds();
+    if (selectedIds.length === 0) {
+        alert('Nenhuma transação selecionada');
+        return;
+    }
+    
+    if (confirm(`Excluir ${selectedIds.length} transação(ões) selecionada(s)? Esta ação não pode ser desfeita.`)) {
+        // Send AJAX request to delete selected transactions
+        fetch('/transactions/delete_selected', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                transaction_ids: selectedIds
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Erro ao excluir transações: ' + data.error);
+            }
+        })
+        .catch(error => {
+            alert('Erro ao excluir transações: ' + error);
+        });
+    }
+}
 </script>
 {% endblock %}
