@@ -279,6 +279,79 @@ def create_template():
     
     return redirect(url_for('templates'))
 
+@app.route('/templates/edit/<template_id>', methods=['POST'])
+def edit_template(template_id):
+    """Edit an existing bank template"""
+    try:
+        # Load existing template
+        templates = FileHandler.load_bank_templates()
+        template = next((t for t in templates if t.banco.lower().replace(' ', '_') == template_id), None)
+        
+        if not template:
+            flash('Template não encontrado', 'error')
+            return redirect(url_for('templates'))
+        
+        # Delete old template file
+        FileHandler.delete_bank_template(template_id)
+        
+        # Update template with new values
+        template.banco = request.form.get('banco')
+        template.formato = request.form.get('formato')
+        template.regex_data = request.form.get('regex_data')
+        template.regex_valor = request.form.get('regex_valor')
+        template.regex_descricao = request.form.get('regex_descricao')
+        template.modo_leitura = request.form.get('modo_leitura')
+        template.linhas_ignoradas_topo = int(request.form.get('linhas_ignoradas_topo', 0))
+        template.linhas_ignoradas_rodape = int(request.form.get('linhas_ignoradas_rodape', 0))
+        
+        # Handle CSV columns if applicable
+        if template.formato == 'csv':
+            template.colunas_csv = {
+                'data': int(request.form.get('col_data', 0)),
+                'descricao': int(request.form.get('col_descricao', 1)),
+                'valor': int(request.form.get('col_valor', 2)),
+                'saldo': int(request.form.get('col_saldo', 3))
+            }
+        
+        # Save updated template
+        FileHandler.save_bank_template(template)
+        flash('Template atualizado com sucesso!', 'success')
+        
+    except Exception as e:
+        logger.error(f"Error editing template: {str(e)}")
+        flash(f'Erro ao editar template: {str(e)}', 'error')
+    
+    return redirect(url_for('templates'))
+
+@app.route('/templates/delete/<template_id>', methods=['POST'])
+def delete_template(template_id):
+    """Delete a bank template"""
+    try:
+        FileHandler.delete_bank_template(template_id)
+        flash('Template excluído com sucesso!', 'success')
+        
+    except Exception as e:
+        logger.error(f"Error deleting template: {str(e)}")
+        flash(f'Erro ao excluir template: {str(e)}', 'error')
+    
+    return redirect(url_for('templates'))
+
+@app.route('/templates/get/<template_id>')
+def get_template(template_id):
+    """Get template data for editing"""
+    try:
+        templates = FileHandler.load_bank_templates()
+        template = next((t for t in templates if t.banco.lower().replace(' ', '_') == template_id), None)
+        
+        if not template:
+            return jsonify({'error': 'Template não encontrado'}), 404
+        
+        return jsonify(template.to_dict())
+        
+    except Exception as e:
+        logger.error(f"Error getting template: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/mappings')
 def mappings():
     """Manage accounting mappings"""

@@ -93,6 +93,21 @@ class FileHandler:
             raise
     
     @staticmethod
+    def delete_bank_template(template_id: str) -> None:
+        """Delete bank template file"""
+        try:
+            template_dir = 'data/templates'
+            filename = f"{template_id}.json"
+            filepath = os.path.join(template_dir, filename)
+            
+            if os.path.exists(filepath):
+                os.remove(filepath)
+        
+        except Exception as e:
+            logger.error(f"Error deleting bank template: {str(e)}")
+            raise
+    
+    @staticmethod
     def load_accounting_mappings() -> List[AccountingMapping]:
         """Load accounting mappings from JSON file"""
         try:

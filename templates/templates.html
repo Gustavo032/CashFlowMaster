@@ -62,11 +62,11 @@
                                         </td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary" 
-                                                    onclick="editTemplate('{{ template.banco }}')">
+                                                    onclick="editTemplate('{{ template.banco.lower().replace(' ', '_') }}')">
                                                 <i data-feather="edit"></i>
                                             </button>
                                             <button class="btn btn-sm btn-outline-danger" 
-                                                    onclick="deleteTemplate('{{ template.banco }}')">
+                                                    onclick="deleteTemplate('{{ template.banco.lower().replace(' ', '_') }}', '{{ template.banco }}')">
                                                 <i data-feather="trash-2"></i>
                                             </button>
                                         </td>
@@ -250,6 +250,115 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Template Modal -->
+<div class="modal fade" id="editTemplateModal" tabindex="-1" aria-labelledby="editTemplateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTemplateModalLabel">Editar Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editTemplateForm" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_banco" class="form-label">Nome do Banco</label>
+                                <input type="text" class="form-control" id="edit_banco" name="banco" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_formato" class="form-label">Formato</label>
+                                <select class="form-select" id="edit_formato" name="formato" required onchange="toggleEditFormatOptions()">
+                                    <option value="">Selecione o formato</option>
+                                    <option value="pdf">PDF</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="ofx">OFX</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_regex_data" class="form-label">Regex para Data</label>
+                        <input type="text" class="form-control" id="edit_regex_data" name="regex_data" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_regex_valor" class="form-label">Regex para Valor</label>
+                        <input type="text" class="form-control" id="edit_regex_valor" name="regex_valor" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_regex_descricao" class="form-label">Regex para Descrição</label>
+                        <input type="text" class="form-control" id="edit_regex_descricao" name="regex_descricao" required>
+                    </div>
+                    
+                    <div class="mb-3" id="edit_modo_leitura_section">
+                        <label for="edit_modo_leitura" class="form-label">Modo de Leitura</label>
+                        <select class="form-select" id="edit_modo_leitura" name="modo_leitura" required>
+                            <option value="texto">Texto (PDF direto)</option>
+                            <option value="ocr">OCR (Reconhecimento óptico)</option>
+                            <option value="csv_heuristico">CSV Heurístico</option>
+                        </select>
+                    </div>
+                    
+                    <!-- CSV Columns Section -->
+                    <div id="edit_csv_columns_section" style="display: none;">
+                        <h6>Mapeamento de Colunas CSV</h6>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="edit_col_data" class="form-label">Coluna Data</label>
+                                    <input type="number" class="form-control" id="edit_col_data" name="col_data" value="0" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="edit_col_descricao" class="form-label">Coluna Descrição</label>
+                                    <input type="number" class="form-control" id="edit_col_descricao" name="col_descricao" value="1" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="edit_col_valor" class="form-label">Coluna Valor</label>
+                                    <input type="number" class="form-control" id="edit_col_valor" name="col_valor" value="2" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="edit_col_saldo" class="form-label">Coluna Saldo</label>
+                                    <input type="number" class="form-control" id="edit_col_saldo" name="col_saldo" value="3" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_linhas_ignoradas_topo" class="form-label">Linhas Ignoradas (Topo)</label>
+                                <input type="number" class="form-control" id="edit_linhas_ignoradas_topo" name="linhas_ignoradas_topo" value="0" min="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_linhas_ignoradas_rodape" class="form-label">Linhas Ignoradas (Rodapé)</label>
+                                <input type="number" class="form-control" id="edit_linhas_ignoradas_rodape" name="linhas_ignoradas_rodape" value="0" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
@@ -268,13 +377,72 @@ function toggleFormatOptions() {
     }
 }
 
-function editTemplate(banco) {
-    alert('Funcionalidade de edição será implementada em breve');
+function toggleEditFormatOptions() {
+    const formato = document.getElementById('edit_formato').value;
+    const csvSection = document.getElementById('edit_csv_columns_section');
+    const modoLeituraSection = document.getElementById('edit_modo_leitura_section');
+    
+    if (formato === 'csv') {
+        csvSection.style.display = 'block';
+        modoLeituraSection.style.display = 'none';
+    } else {
+        csvSection.style.display = 'none';
+        modoLeituraSection.style.display = 'block';
+    }
 }
 
-function deleteTemplate(banco) {
-    if (confirm(`Tem certeza que deseja excluir o template do ${banco}?`)) {
-        alert('Funcionalidade de exclusão será implementada em breve');
+function editTemplate(templateId) {
+    // Fetch template data
+    fetch(`/templates/get/${templateId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Erro ao carregar template: ' + data.error);
+                return;
+            }
+            
+            // Populate form fields
+            document.getElementById('edit_banco').value = data.banco;
+            document.getElementById('edit_formato').value = data.formato;
+            document.getElementById('edit_regex_data').value = data.regex_data;
+            document.getElementById('edit_regex_valor').value = data.regex_valor;
+            document.getElementById('edit_regex_descricao').value = data.regex_descricao;
+            document.getElementById('edit_modo_leitura').value = data.modo_leitura;
+            document.getElementById('edit_linhas_ignoradas_topo').value = data.linhas_ignoradas_topo;
+            document.getElementById('edit_linhas_ignoradas_rodape').value = data.linhas_ignoradas_rodape;
+            
+            // Handle CSV columns if present
+            if (data.colunas_csv) {
+                document.getElementById('edit_col_data').value = data.colunas_csv.data || 0;
+                document.getElementById('edit_col_descricao').value = data.colunas_csv.descricao || 1;
+                document.getElementById('edit_col_valor').value = data.colunas_csv.valor || 2;
+                document.getElementById('edit_col_saldo').value = data.colunas_csv.saldo || 3;
+            }
+            
+            // Toggle format options
+            toggleEditFormatOptions();
+            
+            // Set form action
+            document.getElementById('editTemplateForm').action = `/templates/edit/${templateId}`;
+            
+            // Show modal
+            const editModal = new bootstrap.Modal(document.getElementById('editTemplateModal'));
+            editModal.show();
+        })
+        .catch(error => {
+            console.error('Error fetching template:', error);
+            alert('Erro ao carregar dados do template');
+        });
+}
+
+function deleteTemplate(templateId, templateName) {
+    if (confirm(`Tem certeza que deseja excluir o template ${templateName}?`)) {
+        // Create form and submit
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/templates/delete/${templateId}`;
+        document.body.appendChild(form);
+        form.submit();
     }
 }
 </script>
