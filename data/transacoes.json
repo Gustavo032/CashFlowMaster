@@ -7,10 +7,10 @@
     "valor": 357.9,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "09/07/2025 SALDO DO DIA 357,90",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -35,10 +35,10 @@
     "valor": 357.7,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "10/06/2025 SALDO DO DIA 357,70",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -63,10 +63,10 @@
     "valor": 157.7,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "06/06/2025 SALDO DO DIA 157,70",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -105,10 +105,10 @@
     "valor": 32.7,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "26/05/2025 SALDO DO DIA 32,70",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -133,10 +133,10 @@
     "valor": 632.22,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "12/05/2025 SALDO DO DIA 632,22",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -147,10 +147,10 @@
     "valor": 432.22,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "30/04/2025 SALDO DO DIA 432,22",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -189,10 +189,10 @@
     "valor": 232.22,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "19/03/2025 SALDO DO DIA 232,22",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -231,10 +231,10 @@
     "valor": 32.22,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "05/03/2025 SALDO DO DIA 32,22",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -259,10 +259,10 @@
     "valor": 2832.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "28/02/2025 SALDO DO DIA 2.832,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -301,10 +301,10 @@
     "valor": 2566.44,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "25/02/2025 SALDO DO DIA 2.566,44",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -343,10 +343,10 @@
     "valor": 47.31,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "24/02/2025 SALDO DO DIA 47,31",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -371,10 +371,10 @@
     "valor": 1547.29,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "19/02/2025 SALDO DO DIA 1.547,29",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -399,10 +399,10 @@
     "valor": 347.29,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "10/02/2025 SALDO DO DIA 347,29",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -441,10 +441,10 @@
     "valor": 147.29,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "06/02/2025 SALDO DO DIA 147,29",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -469,10 +469,10 @@
     "valor": 1647.28,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "05/02/2025 SALDO DO DIA 1.647,28",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -497,10 +497,10 @@
     "valor": 95.27,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "04/02/2025 SALDO DO DIA 95,27",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -539,10 +539,10 @@
     "valor": 100.27,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "20/01/2025 SALDO DO DIA 100,27",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -567,10 +567,10 @@
     "valor": 1400.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "17/01/2025 SALDO DO DIA 1.400,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -595,10 +595,10 @@
     "valor": 200.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "16/01/2025 SALDO DO DIA 200,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -637,10 +637,10 @@
     "valor": 100.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "10/01/2025 SALDO DO DIA 100,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -679,10 +679,10 @@
     "valor": 100.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "07/01/2025 SALDO DO DIA 100,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -693,10 +693,10 @@
     "valor": 100.8,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "31/12/2024 SALDO DO DIA 100,80",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -707,10 +707,10 @@
     "valor": 357.9,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "09/07/2025 SALDO DO DIA 357,90",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -735,10 +735,10 @@
     "valor": 357.7,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "10/06/2025 SALDO DO DIA 357,70",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -763,10 +763,10 @@
     "valor": 157.7,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "06/06/2025 SALDO DO DIA 157,70",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -805,10 +805,10 @@
     "valor": 32.7,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "26/05/2025 SALDO DO DIA 32,70",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -833,10 +833,10 @@
     "valor": 632.22,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "12/05/2025 SALDO DO DIA 632,22",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -847,10 +847,10 @@
     "valor": 432.22,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "30/04/2025 SALDO DO DIA 432,22",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -889,10 +889,10 @@
     "valor": 232.22,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "19/03/2025 SALDO DO DIA 232,22",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -931,10 +931,10 @@
     "valor": 32.22,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "05/03/2025 SALDO DO DIA 32,22",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -959,10 +959,10 @@
     "valor": 2832.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "28/02/2025 SALDO DO DIA 2.832,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1001,10 +1001,10 @@
     "valor": 2566.44,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "25/02/2025 SALDO DO DIA 2.566,44",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1043,10 +1043,10 @@
     "valor": 47.31,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "24/02/2025 SALDO DO DIA 47,31",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1071,10 +1071,10 @@
     "valor": 1547.29,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "19/02/2025 SALDO DO DIA 1.547,29",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1099,10 +1099,10 @@
     "valor": 347.29,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "10/02/2025 SALDO DO DIA 347,29",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1141,10 +1141,10 @@
     "valor": 147.29,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "06/02/2025 SALDO DO DIA 147,29",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1169,10 +1169,10 @@
     "valor": 1647.28,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "05/02/2025 SALDO DO DIA 1.647,28",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1197,10 +1197,10 @@
     "valor": 95.27,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "04/02/2025 SALDO DO DIA 95,27",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1239,10 +1239,10 @@
     "valor": 100.27,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "20/01/2025 SALDO DO DIA 100,27",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1267,10 +1267,10 @@
     "valor": 1400.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "17/01/2025 SALDO DO DIA 1.400,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1295,10 +1295,10 @@
     "valor": 200.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "16/01/2025 SALDO DO DIA 200,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1337,10 +1337,10 @@
     "valor": 100.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "10/01/2025 SALDO DO DIA 100,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1379,10 +1379,10 @@
     "valor": 100.2,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "07/01/2025 SALDO DO DIA 100,20",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   },
   {
@@ -1393,10 +1393,10 @@
     "valor": 100.8,
     "tipo_movimentacao": "Crédito",
     "banco": "Genérico",
-    "rotulo_contabil": "",
+    "rotulo_contabil": "IGNORAR",
     "conta_debito": "",
     "conta_credito": "",
-    "historico_contabil": "31/12/2024 SALDO DO DIA 100,80",
+    "historico_contabil": "Transação ignorada - Saldo informativo",
     "revisado_manualmente": false
   }
 ]
