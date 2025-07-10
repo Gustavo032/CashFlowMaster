@@ -501,12 +501,97 @@
     "palavras_chave": [
       "rescisao",
       "contrato",
-      "demissao"
+      "demissao",
+      "pagto rescisao"
     ],
     "regex_avancado": "",
     "conta_debito": "3.1.1.02.001",
     "conta_credito": "1.1.1.02.001",
     "historico_contabil_padrao": "Rescisão contratual",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_031",
+    "rotulo_contabil": "Pagamento de Salário",
+    "descricao_longa": "Pagamento de salário aos funcionários",
+    "tipo_transacao": "saida",
+    "palavras_chave": [
+      "pagto salario",
+      "pagamento salario",
+      "salario pago"
+    ],
+    "regex_avancado": "",
+    "conta_debito": "3.1.1.02.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Pagamento de salário",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_032",
+    "rotulo_contabil": "Adiantamento Salarial",
+    "descricao_longa": "Pagamento de adiantamento salarial aos funcionários",
+    "tipo_transacao": "saida",
+    "palavras_chave": [
+      "pagto adiantamento sa",
+      "adiantamento salarial",
+      "antecipacao salarial"
+    ],
+    "regex_avancado": "",
+    "conta_debito": "1.1.2.01.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Adiantamento salarial",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_033",
+    "rotulo_contabil": "TED Caixa Econômica",
+    "descricao_longa": "Transferência TED da Caixa Econômica Federal",
+    "tipo_transacao": "entrada",
+    "palavras_chave": [
+      "ted",
+      "caixa econ",
+      "caixa economica"
+    ],
+    "regex_avancado": "",
+    "conta_debito": "1.1.1.02.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "TED Caixa Econômica",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_034",
+    "rotulo_contabil": "Transferência entre Contas",
+    "descricao_longa": "Transferências entre contas do mesmo titular",
+    "tipo_transacao": "neutro",
+    "palavras_chave": [
+      "transf",
+      "transferencia"
+    ],
+    "regex_avancado": "",
+    "conta_debito": "1.1.1.02.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Transferência entre contas",
+    "excecoes": [
+      "pix"
+    ],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_035",
+    "rotulo_contabil": "Saldo Informativo",
+    "descricao_longa": "Informação de saldo - deve ser ignorado",
+    "tipo_transacao": "neutro",
+    "palavras_chave": [
+      "saldo do dia"
+    ],
+    "regex_avancado": "",
+    "conta_debito": "",
+    "conta_credito": "",
+    "historico_contabil_padrao": "Ignorar - Saldo informativo",
     "excecoes": [],
     "sub_mapeamentos": []
   }

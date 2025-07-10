@@ -31,7 +31,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Filtros</h5>
-                
+
                 <form method="GET" class="row g-3">
                     <div class="col-md-3">
                         <label for="bank" class="form-label">Banco</label>
@@ -44,7 +44,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    
+
                     <div class="col-md-3">
                         <label for="mapping" class="form-label">Mapeamento</label>
                         <select name="mapping" id="mapping" class="form-select">
@@ -55,21 +55,24 @@
                             <option value="unmapped" {% if current_filters.mapping == 'unmapped' %}selected{% endif %}>
                                 Não mapeadas
                             </option>
+                            <option value="ignored" {% if current_filters.mapping == 'ignored' %}selected{% endif %}>
+                                Ignoradas
+                            </option>
                         </select>
                     </div>
-                    
+
                     <div class="col-md-3">
                         <label for="date_from" class="form-label">Data Inicial</label>
                         <input type="date" name="date_from" id="date_from" class="form-control" 
                                value="{{ current_filters.date_from }}">
                     </div>
-                    
+
                     <div class="col-md-3">
                         <label for="date_to" class="form-label">Data Final</label>
                         <input type="date" name="date_to" id="date_to" class="form-control" 
                                value="{{ current_filters.date_to }}">
                     </div>
-                    
+
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">
                             <i data-feather="filter"></i>
@@ -97,7 +100,7 @@
                         <span class="badge bg-secondary">{{ transactions|length }}</span>
                     {% endif %}
                 </h5>
-                
+
                 {% if transactions %}
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -186,7 +189,7 @@
                         <label for="rotulo_contabil" class="form-label">Categoria</label>
                         <input type="text" class="form-control" id="rotulo_contabil" name="rotulo_contabil" required>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -201,12 +204,12 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="historico_contabil" class="form-label">Histórico Contábil</label>
                         <textarea class="form-control" id="historico_contabil" name="historico_contabil" rows="2"></textarea>
                     </div>
-                    
+
                     <div class="mb-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="create_rule" name="create_rule">
@@ -215,7 +218,7 @@
                             </label>
                         </div>
                     </div>
-                    
+
                     <div id="rule_options" class="mb-3" style="display: none;">
                         <label for="rule_type" class="form-label">Tipo de regra</label>
                         <select class="form-select" id="rule_type" name="rule_type">
@@ -241,16 +244,16 @@ function editTransaction(transactionId) {
     // Get transaction data from the table row
     const row = document.querySelector(`button[onclick="editTransaction('${transactionId}')"]`).closest('tr');
     const cells = row.querySelectorAll('td');
-    
+
     // Fill the form
     document.getElementById('rotulo_contabil').value = cells[4].textContent.trim();
     document.getElementById('conta_debito').value = cells[5].textContent.trim();
     document.getElementById('conta_credito').value = cells[6].textContent.trim();
     document.getElementById('historico_contabil').value = cells[1].getAttribute('title') || cells[1].textContent.trim();
-    
+
     // Set form action
     document.getElementById('editForm').action = `/transactions/edit/${transactionId}`;
-    
+
     // Show modal
     const modal = new bootstrap.Modal(document.getElementById('editModal'));
     modal.show();

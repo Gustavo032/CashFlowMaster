@@ -111,9 +111,11 @@ def transactions():
         if bank_filter:
             filtered_transactions = [t for t in filtered_transactions if t.banco == bank_filter]
         if mapping_filter == 'mapped':
-            filtered_transactions = [t for t in filtered_transactions if t.rotulo_contabil]
+            filtered_transactions = [t for t in filtered_transactions if t.rotulo_contabil and t.rotulo_contabil != 'IGNORAR']
         elif mapping_filter == 'unmapped':
-            filtered_transactions = [t for t in filtered_transactions if not t.rotulo_contabil]
+            filtered_transactions = [t for t in filtered_transactions if not t.rotulo_contabil or t.rotulo_contabil == '']
+        elif mapping_filter == 'ignored':
+            filtered_transactions = [t for t in filtered_transactions if t.rotulo_contabil == 'IGNORAR']
         if date_from:
             filtered_transactions = [t for t in filtered_transactions if t.data >= date_from]
         if date_to:

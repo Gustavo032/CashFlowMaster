@@ -18,6 +18,14 @@ class TransactionMapper:
     def map_transaction(self, transaction: Transaction) -> Transaction:
         """Map a transaction to accounting accounts"""
         try:
+            # Check if transaction should be ignored (like "SALDO DO DIA")
+            if self._should_ignore_transaction(transaction):
+                transaction.rotulo_contabil = "IGNORAR"
+                transaction.conta_debito = ""
+                transaction.conta_credito = ""
+                transaction.historico_contabil = "Transação ignorada - Saldo informativo"
+                return transaction
+            
             # Priority 1: Custom Rules
             custom_mapping = self._check_custom_rules(transaction)
             if custom_mapping:
@@ -199,6 +207,25 @@ class TransactionMapper:
         except Exception as e:
             logger.error(f"Error applying custom mapping: {str(e)}")
             return transaction
+    
+    def _should_ignore_transaction(self, transaction: Transaction) -> bool:
+        """Check if transaction should be ignored (like SALDO DO DIA)"""
+        try:
+            ignore_keywords = [
+                "saldo do dia",
+                "saldo anterior",
+                "saldo atual"
+            ]
+            
+            for keyword in ignore_keywords:
+                if keyword.lower() in transaction.descricao_normalizada:
+                    return True
+            
+            return False
+        
+        except Exception as e:
+            logger.error(f"Error checking if transaction should be ignored: {str(e)}")
+            return False
     
     def _apply_standard_mapping(self, transaction: Transaction, mapping_data: Tuple[AccountingMapping, dict, int]) -> Transaction:
         """Apply standard mapping to transaction"""
