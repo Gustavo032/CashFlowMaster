@@ -44,5 +44,1043 @@
         "historico_contabil_padrao": "Despesas operacionais"
       }
     ]
+  },
+  {
+    "id": "43aedf8d-33fe-4846-90da-d624c9f461ad",
+    "name": "teste22",
+    "description": "",
+    "created_at": "2025-07-10 05:46:30",
+    "mappings": [
+      {
+        "id": "map_001",
+        "rotulo_contabil": "Caixa Geral",
+        "descricao_longa": "Movimentações em dinheiro no caixa da empresa",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "caixa",
+          "dinheiro",
+          "especie"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.01.001",
+        "conta_credito": "1.1.1.01.001",
+        "historico_contabil_padrao": "Movimentação de caixa",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_002",
+        "rotulo_contabil": "Fundo Fixo de Caixa",
+        "descricao_longa": "Fundo fixo para pequenas despesas",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "fundo fixo",
+          "troco"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.01.002",
+        "conta_credito": "1.1.1.01.002",
+        "historico_contabil_padrao": "Movimentação fundo fixo",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_003",
+        "rotulo_contabil": "Banco Conta Movimento",
+        "descricao_longa": "Movimentações na conta corrente bancária",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "banco",
+          "conta corrente",
+          "deposito",
+          "saque"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Movimentação bancária",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_004",
+        "rotulo_contabil": "Aplicações Financeiras",
+        "descricao_longa": "Aplicações financeiras de liquidez imediata",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "aplicacao",
+          "investimento",
+          "cdb",
+          "renda fixa"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.03.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Aplicação financeira",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_005",
+        "rotulo_contabil": "Duplicatas a Receber",
+        "descricao_longa": "Valores a receber de clientes",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "duplicata",
+          "receber",
+          "cliente",
+          "fatura"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.2.01.001",
+        "conta_credito": "4.1.1.01.001",
+        "historico_contabil_padrao": "Duplicata a receber",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_006",
+        "rotulo_contabil": "Empréstimos Nacionais",
+        "descricao_longa": "Empréstimos bancários nacionais",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "emprestimo",
+          "financiamento",
+          "banco"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "2.1.1.01.001",
+        "historico_contabil_padrao": "Empréstimo bancário",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_007",
+        "rotulo_contabil": "Salários e Ordenados",
+        "descricao_longa": "Pagamento de salários aos funcionários",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "salario",
+          "ordenado",
+          "folha",
+          "funcionario"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Pagamento de salários",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_008",
+        "rotulo_contabil": "Pro Labore",
+        "descricao_longa": "Remuneração de sócios ou administradores",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "pro labore",
+          "socio",
+          "administrador"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.002",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Pro labore",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_009",
+        "rotulo_contabil": "13º Salário",
+        "descricao_longa": "Pagamento do décimo terceiro salário",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "13",
+          "decimo terceiro",
+          "gratificacao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.004",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "13º salário",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_010",
+        "rotulo_contabil": "Férias",
+        "descricao_longa": "Pagamento de férias aos funcionários",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "ferias",
+          "descanso"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.005",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Pagamento de férias",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_011",
+        "rotulo_contabil": "INSS",
+        "descricao_longa": "Contribuição previdenciária INSS",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "inss",
+          "previdencia",
+          "contribuicao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.006",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "INSS",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_012",
+        "rotulo_contabil": "FGTS",
+        "descricao_longa": "Fundo de Garantia do Tempo de Serviço",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "fgts",
+          "fundo garantia"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.007",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "FGTS",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_013",
+        "rotulo_contabil": "Venda de Produtos",
+        "descricao_longa": "Receita de venda de produtos no mercado interno",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "venda",
+          "produto",
+          "receita"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.1.01.001",
+        "historico_contabil_padrao": "Venda de produtos",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_014",
+        "rotulo_contabil": "Prestação de Serviços",
+        "descricao_longa": "Receita de prestação de serviços",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "servico",
+          "prestacao",
+          "receita"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.1.02.001",
+        "historico_contabil_padrao": "Prestação de serviços",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_015",
+        "rotulo_contabil": "Juros de Aplicações",
+        "descricao_longa": "Juros de aplicações financeiras",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "juros",
+          "aplicacao",
+          "rendimento",
+          "rend"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.3.01.001",
+        "historico_contabil_padrao": "Juros de aplicações",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_016",
+        "rotulo_contabil": "Transferências PIX",
+        "descricao_longa": "Transferências via PIX",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "pix"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Transferência PIX",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_017",
+        "rotulo_contabil": "TED/DOC",
+        "descricao_longa": "Transferências eletrônicas TED/DOC",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "ted",
+          "doc",
+          "transferencia"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Transferência TED/DOC",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_018",
+        "rotulo_contabil": "Despesas Bancárias",
+        "descricao_longa": "Tarifas e despesas bancárias",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "tarifa",
+          "taxa",
+          "bancaria",
+          "manutencao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.3.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Despesas bancárias",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_019",
+        "rotulo_contabil": "Matéria-Prima",
+        "descricao_longa": "Compra de matéria-prima para produção",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "materia prima",
+          "material",
+          "producao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Compra matéria-prima",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_020",
+        "rotulo_contabil": "Custo Produtos Vendidos",
+        "descricao_longa": "Custo dos produtos vendidos",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "custo",
+          "produto vendido",
+          "cpv"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "5.1.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Custo produtos vendidos",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_021",
+        "rotulo_contabil": "Custo Serviços Prestados",
+        "descricao_longa": "Custo dos serviços prestados",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "custo",
+          "servico prestado",
+          "csp"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "5.1.2.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Custo serviços prestados",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_022",
+        "rotulo_contabil": "Imóveis",
+        "descricao_longa": "Aquisição de imóveis",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "imovel",
+          "terreno",
+          "edificio",
+          "construcao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.2.3.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Aquisição de imóveis",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_023",
+        "rotulo_contabil": "Móveis e Utensílios",
+        "descricao_longa": "Aquisição de móveis e utensílios",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "movel",
+          "utensilio",
+          "mobiliario"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.2.3.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Móveis e utensílios",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_024",
+        "rotulo_contabil": "Máquinas e Equipamentos",
+        "descricao_longa": "Aquisição de máquinas e equipamentos",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "maquina",
+          "equipamento",
+          "ferramenta"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.2.3.03.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Máquinas e equipamentos",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_025",
+        "rotulo_contabil": "Capital Social",
+        "descricao_longa": "Integralização de capital social",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "capital",
+          "integralizacao",
+          "socio"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "2.3.1.01.001",
+        "historico_contabil_padrao": "Integralização capital",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_026",
+        "rotulo_contabil": "Reservas de Capital",
+        "descricao_longa": "Constituição de reservas de capital",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "reserva",
+          "capital"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "5.1.4.01.001",
+        "conta_credito": "2.3.2.01.001",
+        "historico_contabil_padrao": "Reservas de capital",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_027",
+        "rotulo_contabil": "Lucro na Alienação",
+        "descricao_longa": "Lucro na alienação de bens",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "lucro",
+          "alienacao",
+          "venda bem"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.2.1.02.001",
+        "historico_contabil_padrao": "Lucro na alienação",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_028",
+        "rotulo_contabil": "Sinistros",
+        "descricao_longa": "Resultados de sinistros com imobilizado",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "sinistro",
+          "seguro",
+          "indenizacao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.2.1.03.001",
+        "historico_contabil_padrao": "Sinistro imobilizado",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_029",
+        "rotulo_contabil": "Adiantamento Salarial",
+        "descricao_longa": "Pagamento de adiantamento salarial",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "adiantamento",
+          "salario",
+          "antecipacao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.2.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Adiantamento salarial",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_030",
+        "rotulo_contabil": "Rescisão Contratual",
+        "descricao_longa": "Pagamento de rescisão contratual",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "rescisao",
+          "contrato",
+          "demissao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Rescisão contratual",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      }
+    ]
+  },
+  {
+    "id": "2d9ef185-6933-4559-96a9-622b45307351",
+    "name": "caralho de preset",
+    "description": "",
+    "created_at": "2025-07-10 05:46:44",
+    "mappings": [
+      {
+        "id": "map_001",
+        "rotulo_contabil": "Caixa Geral",
+        "descricao_longa": "Movimentações em dinheiro no caixa da empresa",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "caixa",
+          "dinheiro",
+          "especie"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.01.001",
+        "conta_credito": "1.1.1.01.001",
+        "historico_contabil_padrao": "Movimentação de caixa",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_002",
+        "rotulo_contabil": "Fundo Fixo de Caixa",
+        "descricao_longa": "Fundo fixo para pequenas despesas",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "fundo fixo",
+          "troco"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.01.002",
+        "conta_credito": "1.1.1.01.002",
+        "historico_contabil_padrao": "Movimentação fundo fixo",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_003",
+        "rotulo_contabil": "Banco Conta Movimento",
+        "descricao_longa": "Movimentações na conta corrente bancária",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "banco",
+          "conta corrente",
+          "deposito",
+          "saque"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Movimentação bancária",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_004",
+        "rotulo_contabil": "Aplicações Financeiras",
+        "descricao_longa": "Aplicações financeiras de liquidez imediata",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "aplicacao",
+          "investimento",
+          "cdb",
+          "renda fixa"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.03.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Aplicação financeira",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_005",
+        "rotulo_contabil": "Duplicatas a Receber",
+        "descricao_longa": "Valores a receber de clientes",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "duplicata",
+          "receber",
+          "cliente",
+          "fatura"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.2.01.001",
+        "conta_credito": "4.1.1.01.001",
+        "historico_contabil_padrao": "Duplicata a receber",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_006",
+        "rotulo_contabil": "Empréstimos Nacionais",
+        "descricao_longa": "Empréstimos bancários nacionais",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "emprestimo",
+          "financiamento",
+          "banco"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "2.1.1.01.001",
+        "historico_contabil_padrao": "Empréstimo bancário",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_007",
+        "rotulo_contabil": "Salários e Ordenados",
+        "descricao_longa": "Pagamento de salários aos funcionários",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "salario",
+          "ordenado",
+          "folha",
+          "funcionario"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Pagamento de salários",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_008",
+        "rotulo_contabil": "Pro Labore",
+        "descricao_longa": "Remuneração de sócios ou administradores",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "pro labore",
+          "socio",
+          "administrador"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.002",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Pro labore",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_009",
+        "rotulo_contabil": "13º Salário",
+        "descricao_longa": "Pagamento do décimo terceiro salário",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "13",
+          "decimo terceiro",
+          "gratificacao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.004",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "13º salário",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_010",
+        "rotulo_contabil": "Férias",
+        "descricao_longa": "Pagamento de férias aos funcionários",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "ferias",
+          "descanso"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.005",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Pagamento de férias",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_011",
+        "rotulo_contabil": "INSS",
+        "descricao_longa": "Contribuição previdenciária INSS",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "inss",
+          "previdencia",
+          "contribuicao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.006",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "INSS",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_012",
+        "rotulo_contabil": "FGTS",
+        "descricao_longa": "Fundo de Garantia do Tempo de Serviço",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "fgts",
+          "fundo garantia"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.007",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "FGTS",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_013",
+        "rotulo_contabil": "Venda de Produtos",
+        "descricao_longa": "Receita de venda de produtos no mercado interno",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "venda",
+          "produto",
+          "receita"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.1.01.001",
+        "historico_contabil_padrao": "Venda de produtos",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_014",
+        "rotulo_contabil": "Prestação de Serviços",
+        "descricao_longa": "Receita de prestação de serviços",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "servico",
+          "prestacao",
+          "receita"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.1.02.001",
+        "historico_contabil_padrao": "Prestação de serviços",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_015",
+        "rotulo_contabil": "Juros de Aplicações",
+        "descricao_longa": "Juros de aplicações financeiras",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "juros",
+          "aplicacao",
+          "rendimento",
+          "rend"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.3.01.001",
+        "historico_contabil_padrao": "Juros de aplicações",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_016",
+        "rotulo_contabil": "Transferências PIX",
+        "descricao_longa": "Transferências via PIX",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "pix"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Transferência PIX",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_017",
+        "rotulo_contabil": "TED/DOC",
+        "descricao_longa": "Transferências eletrônicas TED/DOC",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "ted",
+          "doc",
+          "transferencia"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Transferência TED/DOC",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_018",
+        "rotulo_contabil": "Despesas Bancárias",
+        "descricao_longa": "Tarifas e despesas bancárias",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "tarifa",
+          "taxa",
+          "bancaria",
+          "manutencao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.3.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Despesas bancárias",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_019",
+        "rotulo_contabil": "Matéria-Prima",
+        "descricao_longa": "Compra de matéria-prima para produção",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "materia prima",
+          "material",
+          "producao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Compra matéria-prima",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_020",
+        "rotulo_contabil": "Custo Produtos Vendidos",
+        "descricao_longa": "Custo dos produtos vendidos",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "custo",
+          "produto vendido",
+          "cpv"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "5.1.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Custo produtos vendidos",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_021",
+        "rotulo_contabil": "Custo Serviços Prestados",
+        "descricao_longa": "Custo dos serviços prestados",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "custo",
+          "servico prestado",
+          "csp"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "5.1.2.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Custo serviços prestados",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_022",
+        "rotulo_contabil": "Imóveis",
+        "descricao_longa": "Aquisição de imóveis",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "imovel",
+          "terreno",
+          "edificio",
+          "construcao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.2.3.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Aquisição de imóveis",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_023",
+        "rotulo_contabil": "Móveis e Utensílios",
+        "descricao_longa": "Aquisição de móveis e utensílios",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "movel",
+          "utensilio",
+          "mobiliario"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.2.3.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Móveis e utensílios",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_024",
+        "rotulo_contabil": "Máquinas e Equipamentos",
+        "descricao_longa": "Aquisição de máquinas e equipamentos",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "maquina",
+          "equipamento",
+          "ferramenta"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.2.3.03.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Máquinas e equipamentos",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_025",
+        "rotulo_contabil": "Capital Social",
+        "descricao_longa": "Integralização de capital social",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "capital",
+          "integralizacao",
+          "socio"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "2.3.1.01.001",
+        "historico_contabil_padrao": "Integralização capital",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_026",
+        "rotulo_contabil": "Reservas de Capital",
+        "descricao_longa": "Constituição de reservas de capital",
+        "tipo_transacao": "neutro",
+        "palavras_chave": [
+          "reserva",
+          "capital"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "5.1.4.01.001",
+        "conta_credito": "2.3.2.01.001",
+        "historico_contabil_padrao": "Reservas de capital",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_027",
+        "rotulo_contabil": "Lucro na Alienação",
+        "descricao_longa": "Lucro na alienação de bens",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "lucro",
+          "alienacao",
+          "venda bem"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.2.1.02.001",
+        "historico_contabil_padrao": "Lucro na alienação",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_028",
+        "rotulo_contabil": "Sinistros",
+        "descricao_longa": "Resultados de sinistros com imobilizado",
+        "tipo_transacao": "entrada",
+        "palavras_chave": [
+          "sinistro",
+          "seguro",
+          "indenizacao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.2.1.03.001",
+        "historico_contabil_padrao": "Sinistro imobilizado",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_029",
+        "rotulo_contabil": "Adiantamento Salarial",
+        "descricao_longa": "Pagamento de adiantamento salarial",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "adiantamento",
+          "salario",
+          "antecipacao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "1.1.2.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Adiantamento salarial",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      },
+      {
+        "id": "map_030",
+        "rotulo_contabil": "Rescisão Contratual",
+        "descricao_longa": "Pagamento de rescisão contratual",
+        "tipo_transacao": "saida",
+        "palavras_chave": [
+          "rescisao",
+          "contrato",
+          "demissao"
+        ],
+        "regex_avancado": "",
+        "conta_debito": "3.1.1.02.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Rescisão contratual",
+        "excecoes": [],
+        "sub_mapeamentos": []
+      }
+    ]
   }
 ]
