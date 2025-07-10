@@ -239,6 +239,34 @@ def clear_transactions():
 
     return redirect(url_for('transactions'))
 
+@app.route('/transactions/refresh_descriptions', methods=['POST'])
+def refresh_descriptions():
+    """Refresh normalized descriptions for all transactions"""
+    try:
+        transactions = FileHandler.load_transactions()
+        mapper = TransactionMapper()
+        
+        for transaction in transactions:
+            # Recreate normalized description with fixed cleaning
+            transaction.descricao_normalizada = transaction._normalize_description(transaction.descricao_original)
+            
+            # Only remap if not manually reviewed
+            if not transaction.revisado_manualmente:
+                mapped_transaction = mapper.map_transaction(transaction)
+                transaction.rotulo_contabil = mapped_transaction.rotulo_contabil
+                transaction.conta_debito = mapped_transaction.conta_debito
+                transaction.conta_credito = mapped_transaction.conta_credito
+                transaction.historico_contabil = mapped_transaction.historico_contabil
+        
+        FileHandler.save_transactions(transactions)
+        flash('Descrições atualizadas e transações remapeadas com sucesso!', 'success')
+        
+    except Exception as e:
+        logger.error(f"Error refreshing descriptions: {str(e)}")
+        flash(f'Erro ao atualizar descrições: {str(e)}', 'error')
+    
+    return redirect(url_for('transactions'))
+
 @app.route('/transactions/remap_selected', methods=['POST'])
 def remap_selected_transactions():
     """Remap selected transactions"""

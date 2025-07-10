@@ -144,15 +144,19 @@
     "descricao_longa": "Pagamento do décimo terceiro salário",
     "tipo_transacao": "saida",
     "palavras_chave": [
-      "13",
+      "13 salario",
+      "13o salario",
       "decimo terceiro",
-      "gratificacao"
+      "gratificacao natalina"
     ],
-    "regex_avancado": "",
+    "regex_avancado": "\\b13[oº°]?\\s+sal[aá]rio|d[eé]cimo\\s+terceiro",
     "conta_debito": "3.1.1.02.004",
     "conta_credito": "1.1.1.02.001",
     "historico_contabil_padrao": "13º salário",
-    "excecoes": [],
+    "excecoes": [
+      "pix",
+      "transferencia"
+    ],
     "sub_mapeamentos": []
   },
   {
@@ -694,6 +698,19 @@
     "conta_credito": "1.1.1.02.001",
     "historico_contabil_padrao": "Pagamento de rescisão contratual",
     "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_043",
+    "rotulo_contabil": "Salários e Ordenados",
+    "descricao_longa": "Pagamentos de salários mensais aos funcionários",
+    "tipo_transacao": "entrada",
+    "palavras_chave": ["pagto salario"],
+    "regex_avancado": "(?i)pagto\\s+salario(?!.*(?:13|adiantamento|rescisao))",
+    "conta_debito": "1.1.1.02.001",
+    "conta_credito": "3.1.1.01.001",
+    "historico_contabil_padrao": "Recebimento de salário",
+    "excecoes": ["adiantamento", "rescisao", "13"],
     "sub_mapeamentos": []
   }
 ]

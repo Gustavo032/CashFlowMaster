@@ -49,10 +49,16 @@ class Transaction:
         date_pattern = r'^\d{2}/\d{2}/\d{4}\s+'
         cleaned = re.sub(date_pattern, '', cleaned)
         
-        # Remove value suffix (e.g., "PIX TRANSF GUSTAVO18/01 -1.300,00" -> "PIX TRANSF GUSTAVO18/01")
-        # Look for patterns like " -1.300,00", " 1.300,00", " R$ 1.300,00"
-        value_pattern = r'\s+(?:R\$\s*)?-?\d{1,3}(?:[\.,]\d{3})*(?:[\.,]\d{2})?(?:\s+R\$)?$'
-        cleaned = re.sub(value_pattern, '', cleaned)
+        # Remove value suffix - more comprehensive patterns
+        # Patterns: " -1.300,00", " 1.300,00", " R$ 1.300,00", "18/01 -1.300,00"
+        value_patterns = [
+            r'\s+(?:R\$\s*)?-?\d{1,3}(?:[\.,]\d{3})*(?:[\.,]\d{2})(?:\s+R\$)?$',  # Standard values
+            r'\s+\d{2}/\d{2}\s+-?\d{1,3}(?:[\.,]\d{3})*(?:[\.,]\d{2})$',          # Date + value
+            r'\s+-?\d{1,3}(?:[\.,]\d{3})*(?:[\.,]\d{2})$'                          # Just value
+        ]
+        
+        for pattern in value_patterns:
+            cleaned = re.sub(pattern, '', cleaned)
         
         return cleaned.strip()
     
