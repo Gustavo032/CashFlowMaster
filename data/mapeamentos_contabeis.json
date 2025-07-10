@@ -1,0 +1,84 @@
+[
+  {
+    "id": "map_001",
+    "rotulo_contabil": "Pagamento de Salários",
+    "descricao_longa": "Pagamento de salários e ordenados aos funcionários",
+    "tipo_transacao": "saida",
+    "palavras_chave": ["salario", "ordenado", "folha", "pagamento"],
+    "regex_avancado": "",
+    "conta_debito": "3.1.1.01.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Pagamento de salários",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_002",
+    "rotulo_contabil": "Receita de Vendas",
+    "descricao_longa": "Receita proveniente de vendas de produtos ou serviços",
+    "tipo_transacao": "entrada",
+    "palavras_chave": ["venda", "receita", "pagamento", "cliente"],
+    "regex_avancado": "",
+    "conta_debito": "1.1.1.02.001",
+    "conta_credito": "4.1.1.01.001",
+    "historico_contabil_padrao": "Receita de vendas",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_003",
+    "rotulo_contabil": "Despesas Bancárias",
+    "descricao_longa": "Tarifas e despesas bancárias",
+    "tipo_transacao": "saida",
+    "palavras_chave": ["tarifa", "taxa", "manutencao", "bancaria"],
+    "regex_avancado": "",
+    "conta_debito": "3.3.2.01.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Despesas bancárias",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_004",
+    "rotulo_contabil": "Fornecedores",
+    "descricao_longa": "Pagamentos a fornecedores",
+    "tipo_transacao": "saida",
+    "palavras_chave": ["fornecedor", "compra", "pagamento", "produto"],
+    "regex_avancado": "",
+    "conta_debito": "2.1.1.01.001",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Pagamento a fornecedores",
+    "excecoes": [],
+    "sub_mapeamentos": []
+  },
+  {
+    "id": "map_005",
+    "rotulo_contabil": "Transferências PIX",
+    "descricao_longa": "Transferências via PIX",
+    "tipo_transacao": "neutro",
+    "palavras_chave": ["pix"],
+    "regex_avancado": "",
+    "conta_debito": "1.1.1.02.002",
+    "conta_credito": "1.1.1.02.001",
+    "historico_contabil_padrao": "Transferência PIX",
+    "excecoes": [],
+    "sub_mapeamentos": [
+      {
+        "id": "sub_map_001",
+        "rotulo_contabil": "PIX Recebido",
+        "palavras_chave": ["pix recebido", "recebimento"],
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.1.01.001",
+        "historico_contabil_padrao": "PIX recebido"
+      },
+      {
+        "id": "sub_map_002",
+        "rotulo_contabil": "PIX Enviado",
+        "palavras_chave": ["pix enviado", "envio"],
+        "conta_debito": "3.3.2.01.002",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "PIX enviado"
+      }
+    ]
+  }
+]

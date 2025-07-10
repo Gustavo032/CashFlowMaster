@@ -1,0 +1,122 @@
+[
+  {
+    "nome": "Contimatic Padrão",
+    "formato": "txt",
+    "delimitador": "|",
+    "colunas": [
+      {
+        "campo": "data",
+        "nome_coluna": "DTLANC",
+        "tipo": "data",
+        "formato": "%Y%m%d"
+      },
+      {
+        "campo": "conta_debito",
+        "nome_coluna": "CTADEB",
+        "tipo": "texto",
+        "tamanho_fixo": 15,
+        "preenchimento": "espacos"
+      },
+      {
+        "campo": "conta_credito",
+        "nome_coluna": "CTACRED",
+        "tipo": "texto",
+        "tamanho_fixo": 15,
+        "preenchimento": "espacos"
+      },
+      {
+        "campo": "valor",
+        "nome_coluna": "VRLANC",
+        "tipo": "numero",
+        "formato": "%.2f",
+        "separador_decimal": ""
+      },
+      {
+        "campo": "historico_contabil",
+        "nome_coluna": "HISTLANC",
+        "tipo": "texto",
+        "tamanho_fixo": 50,
+        "preenchimento": "espacos"
+      }
+    ]
+  },
+  {
+    "nome": "Domínio Sistemas",
+    "formato": "csv",
+    "delimitador": ";",
+    "colunas": [
+      {
+        "campo": "data",
+        "nome_coluna": "Data",
+        "tipo": "data",
+        "formato": "%d/%m/%Y"
+      },
+      {
+        "campo": "conta_debito",
+        "nome_coluna": "Conta Débito",
+        "tipo": "texto"
+      },
+      {
+        "campo": "conta_credito",
+        "nome_coluna": "Conta Crédito",
+        "tipo": "texto"
+      },
+      {
+        "campo": "valor",
+        "nome_coluna": "Valor",
+        "tipo": "numero",
+        "formato": "%.2f",
+        "separador_decimal": ","
+      },
+      {
+        "campo": "historico_contabil",
+        "nome_coluna": "Histórico",
+        "tipo": "texto"
+      }
+    ]
+  },
+  {
+    "nome": "Excel Padrão",
+    "formato": "csv",
+    "delimitador": ",",
+    "colunas": [
+      {
+        "campo": "data",
+        "nome_coluna": "Data",
+        "tipo": "data",
+        "formato": "%d/%m/%Y"
+      },
+      {
+        "campo": "descricao_original",
+        "nome_coluna": "Descrição",
+        "tipo": "texto"
+      },
+      {
+        "campo": "valor",
+        "nome_coluna": "Valor",
+        "tipo": "numero",
+        "formato": "%.2f"
+      },
+      {
+        "campo": "tipo_movimentacao",
+        "nome_coluna": "Tipo",
+        "tipo": "texto"
+      },
+      {
+        "campo": "rotulo_contabil",
+        "nome_coluna": "Categoria",
+        "tipo": "texto"
+      },
+      {
+        "campo": "conta_debito",
+        "nome_coluna": "Conta Débito",
+        "tipo": "texto"
+      },
+      {
+        "campo": "conta_credito",
+        "nome_coluna": "Conta Crédito",
+        "tipo": "texto"
+      }
+    ]
+  }
+]

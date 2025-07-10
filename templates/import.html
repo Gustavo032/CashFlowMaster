@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Importar Extrato - CashFlowMaster{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Importar Extrato Bancário</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Upload de Arquivo</h5>
+                
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Selecione o arquivo do extrato</label>
+                        <input type="file" class="form-control" id="file" name="file" required 
+                               accept=".pdf,.csv,.ofx">
+                        <div class="form-text">
+                            Formatos suportados: PDF, CSV, OFX
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="bank_template" class="form-label">Template do Banco</label>
+                        <select class="form-select" id="bank_template" name="bank_template">
+                            <option value="auto">Detecção Automática</option>
+                            {% for template in templates %}
+                                <option value="{{ template.banco }}">{{ template.banco }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">
+                            Selecione o template específico do seu banco ou use a detecção automática
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i data-feather="upload"></i>
+                            Importar Extrato
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Instruções</h5>
+                
+                <div class="mb-3">
+                    <h6>Formatos Suportados</h6>
+                    <ul class="list-unstyled">
+                        <li><i data-feather="file" class="feather-sm"></i> PDF - Extratos em PDF</li>
+                        <li><i data-feather="file-text" class="feather-sm"></i> CSV - Planilhas CSV</li>
+                        <li><i data-feather="database" class="feather-sm"></i> OFX - Arquivos OFX</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Processamento</h6>
+                    <p class="small text-muted">
+                        O sistema tentará extrair automaticamente as informações do seu extrato usando diferentes métodos:
+                    </p>
+                    <ol class="small">
+                        <li>Extração direta de texto</li>
+                        <li>OCR (reconhecimento óptico)</li>
+                        <li>Conversão heurística</li>
+                    </ol>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Bancos Suportados</h6>
+                    <p class="small text-muted">
+                        Templates disponíveis:
+                    </p>
+                    <ul class="list-unstyled small">
+                        {% for template in templates %}
+                            <li><i data-feather="check" class="feather-sm text-success"></i> {{ template.banco }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Dica</h5>
+                <p class="small text-muted">
+                    <i data-feather="lightbulb" class="feather-sm text-warning"></i>
+                    Para melhores resultados, use extratos em formato PDF não protegido por senha.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

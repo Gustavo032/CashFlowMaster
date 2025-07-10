@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Exportar Dados - CashFlowMaster{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Exportar Dados</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Configurações de Exportação</h5>
+                
+                <form method="POST" action="{{ url_for('export_download') }}" id="exportForm">
+                    <div class="mb-3">
+                        <label for="format" class="form-label">Formato de Exportação</label>
+                        <select class="form-select" id="format" name="format" required onchange="updateLayoutOptions()">
+                            <option value="">Selecione o formato</option>
+                            <option value="csv">CSV (Planilha)</option>
+                            <option value="txt">TXT (Sistema Contábil)</option>
+                            <option value="json">JSON (Estrutura Completa)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="layout" class="form-label">Layout de Exportação</label>
+                        <select class="form-select" id="layout" name="layout" required>
+                            <option value="">Selecione o layout</option>
+                            {% for layout in layouts %}
+                                <option value="{{ layout.nome }}" data-format="{{ layout.formato }}">
+                                    {{ layout.nome }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="date_from" class="form-label">Data Inicial</label>
+                                <input type="date" class="form-control" id="date_from" name="date_from">
+                                <div class="form-text">Deixe em branco para exportar todas</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="date_to" class="form-label">Data Final</label>
+                                <input type="date" class="form-control" id="date_to" name="date_to">
+                                <div class="form-text">Deixe em branco para exportar todas</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg" id="exportButton">
+                            <i data-feather="download"></i>
+                            <span id="buttonText">Exportar Dados</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Resumo dos Dados</h5>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Total de Transações:</span>
+                        <span class="fw-bold">{{ transactions|length }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Mapeadas:</span>
+                        <span class="fw-bold text-success">{{ transactions|selectattr('rotulo_contabil')|list|length }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Não Mapeadas:</span>
+                        <span class="fw-bold text-warning">{{ transactions|rejectattr('rotulo_contabil')|list|length }}</span>
+                    </div>
+                </div>
+                
+                {% if transactions %}
+                    <div class="mb-3">
+                        <h6>Período dos Dados</h6>
+                        <p class="small text-muted">
+                            De {{ transactions|map(attribute='data')|min }} até {{ transactions|map(attribute='data')|max }}
+                        </p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Bancos Presentes</h6>
+                        {% for banco in transactions|map(attribute='banco')|unique %}
+                            <span class="badge bg-info me-1">{{ banco }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Formatos Disponíveis</h5>
+                
+                <div class="mb-3">
+                    <h6><i data-feather="file-text" class="feather-sm"></i> CSV</h6>
+                    <p class="small text-muted">
+                        Formato de planilha, ideal para análise no Excel ou Google Sheets. 
+                        Inclui todas as informações das transações.
+                    </p>
+                </div>
+                
+                <div class="mb-3">
+                    <h6><i data-feather="file" class="feather-sm"></i> TXT</h6>
+                    <p class="small text-muted">
+                        Formato específico para importação em sistemas contábeis como 
+                        Contimatic, Domínio, etc. Formatação fixa com delimitadores.
+                    </p>
+                </div>
+                
+                <div class="mb-3">
+                    <h6><i data-feather="code" class="feather-sm"></i> JSON</h6>
+                    <p class="small text-muted">
+                        Estrutura completa dos dados para backup ou integração com 
+                        outros sistemas. Mantém toda a informação original.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Layouts Pré-configurados</h5>
+                
+                {% for layout in layouts %}
+                    <div class="mb-2">
+                        <h6 class="mb-1">{{ layout.nome }}</h6>
+                        <p class="small text-muted mb-1">
+                            Formato: {{ layout.formato.upper() }}
+                            {% if layout.delimitador %}
+                                | Delimitador: "{{ layout.delimitador }}"
+                            {% endif %}
+                        </p>
+                        <p class="small text-muted">
+                            Colunas: {{ layout.colunas|length }}
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Status Modal -->
+<div class="modal fade" id="exportStatusModal" tabindex="-1" aria-labelledby="exportStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportStatusModalLabel">Status da Exportação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+                <p>Preparando arquivo para download...</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function updateLayoutOptions() {
+    const format = document.getElementById('format').value;
+    const layoutSelect = document.getElementById('layout');
+    const layoutOptions = layoutSelect.querySelectorAll('option');
+    
+    // Reset layout selection
+    layoutSelect.value = '';
+    
+    // Show/hide layout options based on format
+    layoutOptions.forEach(option => {
+        if (option.value === '') {
+            option.style.display = 'block';
+            return;
+        }
+        
+        const optionFormat = option.getAttribute('data-format');
+        if (format === '' || optionFormat === format) {
+            option.style.display = 'block';
+        } else {
+            option.style.display = 'none';
+        }
+    });
+}
+
+// Handle form submission
+document.getElementById('exportForm').addEventListener('submit', function(e) {
+    const button = document.getElementById('exportButton');
+    const buttonText = document.getElementById('buttonText');
+    
+    // Show loading state
+    button.disabled = true;
+    buttonText.textContent = 'Exportando...';
+    
+    // Show status modal
+    const statusModal = new bootstrap.Modal(document.getElementById('exportStatusModal'));
+    statusModal.show();
+    
+    // Set timeout to hide modal and restore button (in case of download)
+    setTimeout(() => {
+        statusModal.hide();
+        button.disabled = false;
+        buttonText.textContent = 'Exportar Dados';
+    }, 3000);
+});
+
+// Update layout options on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateLayoutOptions();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+[
+  {
+    "nome_preset": "Padrão Empresa Comercial",
+    "mapeamentos": [
+      {
+        "rotulo_contabil": "Vendas à Vista",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.1.01.001",
+        "historico_contabil_padrao": "Vendas à vista"
+      },
+      {
+        "rotulo_contabil": "Custo das Mercadorias Vendidas",
+        "conta_debito": "3.1.1.01.001",
+        "conta_credito": "1.1.2.01.001",
+        "historico_contabil_padrao": "CMV"
+      },
+      {
+        "rotulo_contabil": "Despesas Administrativas",
+        "conta_debito": "3.3.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Despesas administrativas"
+      }
+    ]
+  },
+  {
+    "nome_preset": "Padrão Empresa de Serviços",
+    "mapeamentos": [
+      {
+        "rotulo_contabil": "Receita de Serviços",
+        "conta_debito": "1.1.1.02.001",
+        "conta_credito": "4.1.1.01.001",
+        "historico_contabil_padrao": "Receita de serviços"
+      },
+      {
+        "rotulo_contabil": "Salários e Encargos",
+        "conta_debito": "3.1.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Salários e encargos"
+      },
+      {
+        "rotulo_contabil": "Despesas Operacionais",
+        "conta_debito": "3.3.1.01.001",
+        "conta_credito": "1.1.1.02.001",
+        "historico_contabil_padrao": "Despesas operacionais"
+      }
+    ]
+  }
+]

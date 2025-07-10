@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CashFlowMaster{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Dashboard</h1>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Total de Transações</h5>
+                        <h2 class="mb-0">{{ stats.total_transactions }}</h2>
+                    </div>
+                    <div class="align-self-center">
+                        <i data-feather="file-text" class="feather-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Mapeadas</h5>
+                        <h2 class="mb-0">{{ stats.mapped_transactions }}</h2>
+                    </div>
+                    <div class="align-self-center">
+                        <i data-feather="check-circle" class="feather-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Não Mapeadas</h5>
+                        <h2 class="mb-0">{{ stats.unmapped_transactions }}</h2>
+                    </div>
+                    <div class="align-self-center">
+                        <i data-feather="alert-circle" class="feather-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">% Mapeamento</h5>
+                        <h2 class="mb-0">{{ stats.mapping_percentage }}%</h2>
+                    </div>
+                    <div class="align-self-center">
+                        <i data-feather="pie-chart" class="feather-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Ações Rápidas</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('import_statement') }}" class="btn btn-primary btn-lg w-100">
+                            <i data-feather="upload"></i>
+                            Importar Extrato
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('transactions') }}" class="btn btn-secondary btn-lg w-100">
+                            <i data-feather="list"></i>
+                            Ver Transações
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('export_page') }}" class="btn btn-success btn-lg w-100">
+                            <i data-feather="download"></i>
+                            Exportar Dados
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Transactions -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Transações Recentes</h5>
+                
+                {% if recent_transactions %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Valor</th>
+                                    <th>Banco</th>
+                                    <th>Categoria</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in recent_transactions %}
+                                    <tr>
+                                        <td>{{ transaction.data }}</td>
+                                        <td>{{ transaction.descricao_original[:50] }}{% if transaction.descricao_original|length > 50 %}...{% endif %}</td>
+                                        <td class="{% if transaction.valor < 0 %}text-danger{% else %}text-success{% endif %}">
+                                            R$ {{ "%.2f"|format(transaction.valor) }}
+                                        </td>
+                                        <td>{{ transaction.banco }}</td>
+                                        <td>
+                                            {% if transaction.rotulo_contabil %}
+                                                <span class="badge bg-success">{{ transaction.rotulo_contabil }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Não mapeado</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if transaction.revisado_manualmente %}
+                                                <span class="badge bg-info">Manual</span>
+                                            {% else %}
+                                                <span class="badge bg-primary">Automático</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('transactions') }}" class="btn btn-outline-primary">
+                            Ver Todas as Transações
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i data-feather="inbox" class="feather-lg text-muted"></i>
+                        <p class="text-muted mt-2">Nenhuma transação encontrada</p>
+                        <a href="{{ url_for('import_statement') }}" class="btn btn-primary">
+                            Importar Primeiro Extrato
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

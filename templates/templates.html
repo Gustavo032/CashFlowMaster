@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}Templates - CashFlowMaster{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Templates de Bancos</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTemplateModal">
+                <i data-feather="plus"></i>
+                Novo Template
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Templates List -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Templates Disponíveis</h5>
+                
+                {% if templates %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Banco</th>
+                                    <th>Formato</th>
+                                    <th>Modo de Leitura</th>
+                                    <th>Regex Data</th>
+                                    <th>Regex Valor</th>
+                                    <th>Linhas Ignoradas</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for template in templates %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ template.banco }}</strong>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary">{{ template.formato.upper() }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">{{ template.modo_leitura }}</span>
+                                        </td>
+                                        <td>
+                                            <code class="small">{{ template.regex_data[:20] }}{% if template.regex_data|length > 20 %}...{% endif %}</code>
+                                        </td>
+                                        <td>
+                                            <code class="small">{{ template.regex_valor[:20] }}{% if template.regex_valor|length > 20 %}...{% endif %}</code>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                Topo: {{ template.linhas_ignoradas_topo }}, 
+                                                Rodapé: {{ template.linhas_ignoradas_rodape }}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    onclick="editTemplate('{{ template.banco }}')">
+                                                <i data-feather="edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger" 
+                                                    onclick="deleteTemplate('{{ template.banco }}')">
+                                                <i data-feather="trash-2"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i data-feather="file-text" class="feather-lg text-muted"></i>
+                        <p class="text-muted mt-2">Nenhum template encontrado</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTemplateModal">
+                            <i data-feather="plus"></i>
+                            Criar Primeiro Template
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information Cards -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i data-feather="info" class="feather-sm text-info"></i>
+                    Como Funciona
+                </h5>
+                <p class="small text-muted">
+                    Os templates definem como extrair informações dos extratos bancários. 
+                    Cada banco tem padrões específicos de formatação que precisam ser mapeados.
+                </p>
+                <ul class="small">
+                    <li><strong>Regex Data:</strong> Padrão para identificar datas</li>
+                    <li><strong>Regex Valor:</strong> Padrão para identificar valores</li>
+                    <li><strong>Regex Descrição:</strong> Padrão para capturar descrições</li>
+                    <li><strong>Linhas Ignoradas:</strong> Cabeçalho e rodapé a ignorar</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i data-feather="help-circle" class="feather-sm text-warning"></i>
+                    Dicas Importantes
+                </h5>
+                <ul class="small">
+                    <li>Teste sempre com arquivos reais do banco</li>
+                    <li>Use modo OCR para PDFs protegidos</li>
+                    <li>Configure colunas CSV para arquivos de planilha</li>
+                    <li>Ajuste linhas ignoradas para remover cabeçalhos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Template Modal -->
+<div class="modal fade" id="createTemplateModal" tabindex="-1" aria-labelledby="createTemplateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTemplateModalLabel">Criar Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('create_template') }}">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="banco" class="form-label">Nome do Banco</label>
+                                <input type="text" class="form-control" id="banco" name="banco" required
+                                       placeholder="ex: Bradesco, Itaú, Banco do Brasil">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="formato" class="form-label">Formato</label>
+                                <select class="form-select" id="formato" name="formato" required onchange="toggleFormatOptions()">
+                                    <option value="">Selecione o formato</option>
+                                    <option value="pdf">PDF</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="ofx">OFX</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="regex_data" class="form-label">Regex para Data</label>
+                        <input type="text" class="form-control" id="regex_data" name="regex_data" 
+                               value="\d{2}/\d{2}/\d{4}" required>
+                        <div class="form-text">Padrão regex para identificar datas no formato DD/MM/AAAA</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="regex_valor" class="form-label">Regex para Valor</label>
+                        <input type="text" class="form-control" id="regex_valor" name="regex_valor" 
+                               value="-?\d{1,3}(?:\.?\d{3})*,\d{2}" required>
+                        <div class="form-text">Padrão regex para identificar valores monetários</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="regex_descricao" class="form-label">Regex para Descrição</label>
+                        <input type="text" class="form-control" id="regex_descricao" name="regex_descricao" 
+                               value=".+" required>
+                        <div class="form-text">Padrão regex para capturar descrições das transações</div>
+                    </div>
+                    
+                    <div class="mb-3" id="modo_leitura_section">
+                        <label for="modo_leitura" class="form-label">Modo de Leitura</label>
+                        <select class="form-select" id="modo_leitura" name="modo_leitura" required>
+                            <option value="texto">Texto (PDF direto)</option>
+                            <option value="ocr">OCR (Reconhecimento óptico)</option>
+                            <option value="csv_heuristico">CSV Heurístico</option>
+                        </select>
+                    </div>
+                    
+                    <!-- CSV Columns Section -->
+                    <div id="csv_columns_section" style="display: none;">
+                        <h6>Mapeamento de Colunas CSV</h6>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="col_data" class="form-label">Coluna Data</label>
+                                    <input type="number" class="form-control" id="col_data" name="col_data" value="0" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="col_descricao" class="form-label">Coluna Descrição</label>
+                                    <input type="number" class="form-control" id="col_descricao" name="col_descricao" value="1" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="col_valor" class="form-label">Coluna Valor</label>
+                                    <input type="number" class="form-control" id="col_valor" name="col_valor" value="2" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="col_saldo" class="form-label">Coluna Saldo</label>
+                                    <input type="number" class="form-control" id="col_saldo" name="col_saldo" value="3" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="linhas_ignoradas_topo" class="form-label">Linhas Ignoradas (Topo)</label>
+                                <input type="number" class="form-control" id="linhas_ignoradas_topo" name="linhas_ignoradas_topo" 
+                                       value="0" min="0">
+                                <div class="form-text">Número de linhas de cabeçalho a ignorar</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="linhas_ignoradas_rodape" class="form-label">Linhas Ignoradas (Rodapé)</label>
+                                <input type="number" class="form-control" id="linhas_ignoradas_rodape" name="linhas_ignoradas_rodape" 
+                                       value="0" min="0">
+                                <div class="form-text">Número de linhas de rodapé a ignorar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Criar Template</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function toggleFormatOptions() {
+    const formato = document.getElementById('formato').value;
+    const csvSection = document.getElementById('csv_columns_section');
+    const modoLeituraSection = document.getElementById('modo_leitura_section');
+    
+    if (formato === 'csv') {
+        csvSection.style.display = 'block';
+        modoLeituraSection.style.display = 'none';
+    } else {
+        csvSection.style.display = 'none';
+        modoLeituraSection.style.display = 'block';
+    }
+}
+
+function editTemplate(banco) {
+    alert('Funcionalidade de edição será implementada em breve');
+}
+
+function deleteTemplate(banco) {
+    if (confirm(`Tem certeza que deseja excluir o template do ${banco}?`)) {
+        alert('Funcionalidade de exclusão será implementada em breve');
+    }
+}
+</script>
+{% endblock %}

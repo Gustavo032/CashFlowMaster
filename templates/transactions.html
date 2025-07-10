@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}Transações - CashFlowMaster{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Transações</h1>
+            <div class="btn-group">
+                <form method="POST" action="{{ url_for('remap_transactions') }}" class="d-inline">
+                    <button type="submit" class="btn btn-secondary" onclick="return confirm('Remapear todas as transações?')">
+                        <i data-feather="refresh-cw"></i>
+                        Remapear Tudo
+                    </button>
+                </form>
+                <form method="POST" action="{{ url_for('clear_transactions') }}" class="d-inline">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apagar todas as transações? Esta ação não pode ser desfeita.')">
+                        <i data-feather="trash-2"></i>
+                        Apagar Todas
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Filtros</h5>
+                
+                <form method="GET" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="bank" class="form-label">Banco</label>
+                        <select name="bank" id="bank" class="form-select">
+                            <option value="">Todos os bancos</option>
+                            {% for bank in banks %}
+                                <option value="{{ bank }}" {% if current_filters.bank == bank %}selected{% endif %}>
+                                    {{ bank }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="mapping" class="form-label">Mapeamento</label>
+                        <select name="mapping" id="mapping" class="form-select">
+                            <option value="">Todas</option>
+                            <option value="mapped" {% if current_filters.mapping == 'mapped' %}selected{% endif %}>
+                                Mapeadas
+                            </option>
+                            <option value="unmapped" {% if current_filters.mapping == 'unmapped' %}selected{% endif %}>
+                                Não mapeadas
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="date_from" class="form-label">Data Inicial</label>
+                        <input type="date" name="date_from" id="date_from" class="form-control" 
+                               value="{{ current_filters.date_from }}">
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="date_to" class="form-label">Data Final</label>
+                        <input type="date" name="date_to" id="date_to" class="form-control" 
+                               value="{{ current_filters.date_to }}">
+                    </div>
+                    
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i data-feather="filter"></i>
+                            Filtrar
+                        </button>
+                        <a href="{{ url_for('transactions') }}" class="btn btn-secondary">
+                            <i data-feather="x"></i>
+                            Limpar Filtros
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Transactions Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Lista de Transações
+                    {% if transactions %}
+                        <span class="badge bg-secondary">{{ transactions|length }}</span>
+                    {% endif %}
+                </h5>
+                
+                {% if transactions %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Valor</th>
+                                    <th>Banco</th>
+                                    <th>Categoria</th>
+                                    <th>Conta Débito</th>
+                                    <th>Conta Crédito</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in transactions %}
+                                    <tr>
+                                        <td>{{ transaction.data }}</td>
+                                        <td>
+                                            <span title="{{ transaction.descricao_original }}">
+                                                {{ transaction.descricao_original[:40] }}{% if transaction.descricao_original|length > 40 %}...{% endif %}
+                                            </span>
+                                        </td>
+                                        <td class="{% if transaction.valor < 0 %}text-danger{% else %}text-success{% endif %}">
+                                            R$ {{ "%.2f"|format(transaction.valor) }}
+                                        </td>
+                                        <td>{{ transaction.banco }}</td>
+                                        <td>
+                                            {% if transaction.rotulo_contabil %}
+                                                <span class="badge bg-success">{{ transaction.rotulo_contabil }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Não mapeado</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">{{ transaction.conta_debito }}</small>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">{{ transaction.conta_credito }}</small>
+                                        </td>
+                                        <td>
+                                            {% if transaction.revisado_manualmente %}
+                                                <span class="badge bg-info">Manual</span>
+                                            {% else %}
+                                                <span class="badge bg-primary">Automático</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    onclick="editTransaction('{{ transaction.id }}')">
+                                                <i data-feather="edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i data-feather="inbox" class="feather-lg text-muted"></i>
+                        <p class="text-muted mt-2">Nenhuma transação encontrada</p>
+                        <a href="{{ url_for('import_statement') }}" class="btn btn-primary">
+                            Importar Extrato
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Transaction Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Transação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="rotulo_contabil" class="form-label">Categoria</label>
+                        <input type="text" class="form-control" id="rotulo_contabil" name="rotulo_contabil" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="conta_debito" class="form-label">Conta Débito</label>
+                                <input type="text" class="form-control" id="conta_debito" name="conta_debito" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="conta_credito" class="form-label">Conta Crédito</label>
+                                <input type="text" class="form-control" id="conta_credito" name="conta_credito" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="historico_contabil" class="form-label">Histórico Contábil</label>
+                        <textarea class="form-control" id="historico_contabil" name="historico_contabil" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="create_rule" name="create_rule">
+                            <label class="form-check-label" for="create_rule">
+                                Criar regra para transações similares
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="rule_options" class="mb-3" style="display: none;">
+                        <label for="rule_type" class="form-label">Tipo de regra</label>
+                        <select class="form-select" id="rule_type" name="rule_type">
+                            <option value="contains">Descrições que contenham o texto</option>
+                            <option value="exact">Descrições exatamente iguais</option>
+                            <option value="exact_value">Descrições iguais e mesmo valor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function editTransaction(transactionId) {
+    // Get transaction data from the table row
+    const row = document.querySelector(`button[onclick="editTransaction('${transactionId}')"]`).closest('tr');
+    const cells = row.querySelectorAll('td');
+    
+    // Fill the form
+    document.getElementById('rotulo_contabil').value = cells[4].textContent.trim();
+    document.getElementById('conta_debito').value = cells[5].textContent.trim();
+    document.getElementById('conta_credito').value = cells[6].textContent.trim();
+    document.getElementById('historico_contabil').value = cells[1].getAttribute('title') || cells[1].textContent.trim();
+    
+    // Set form action
+    document.getElementById('editForm').action = `/transactions/edit/${transactionId}`;
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
+}
+
+// Show/hide rule options
+document.getElementById('create_rule').addEventListener('change', function() {
+    document.getElementById('rule_options').style.display = this.checked ? 'block' : 'none';
+});
+</script>
+{% endblock %}

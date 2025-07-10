@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+
+{% block title %}Mapeamentos Contábeis - CashFlowMaster{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Mapeamentos Contábeis</h1>
+            <div class="btn-group">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#presetModal">
+                    <i data-feather="save"></i>
+                    Presets
+                </button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMappingModal">
+                    <i data-feather="plus"></i>
+                    Novo Mapeamento
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mappings List -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Mapeamentos Configurados</h5>
+                
+                {% if mappings %}
+                    <div class="accordion" id="mappingsAccordion">
+                        {% for mapping in mappings %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ loop.index }}">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" 
+                                            aria-expanded="false">
+                                        <div class="d-flex justify-content-between w-100 me-3">
+                                            <div>
+                                                <strong>{{ mapping.rotulo_contabil }}</strong>
+                                                <span class="badge bg-{{ 'success' if mapping.tipo_transacao == 'entrada' else 'danger' if mapping.tipo_transacao == 'saida' else 'secondary' }} ms-2">
+                                                    {{ mapping.tipo_transacao.title() }}
+                                                </span>
+                                            </div>
+                                            <div class="text-muted small">
+                                                {{ mapping.palavras_chave|join(', ') }}
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" 
+                                     data-bs-parent="#mappingsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h6>Informações Básicas</h6>
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <td><strong>Descrição:</strong></td>
+                                                        <td>{{ mapping.descricao_longa or 'Não informado' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Tipo:</strong></td>
+                                                        <td>{{ mapping.tipo_transacao.title() }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Palavras-chave:</strong></td>
+                                                        <td>
+                                                            {% for palavra in mapping.palavras_chave %}
+                                                                <span class="badge bg-info">{{ palavra }}</span>
+                                                            {% endfor %}
+                                                        </td>
+                                                    </tr>
+                                                    {% if mapping.regex_avancado %}
+                                                        <tr>
+                                                            <td><strong>Regex Avançado:</strong></td>
+                                                            <td><code>{{ mapping.regex_avancado }}</code></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    {% if mapping.excecoes %}
+                                                        <tr>
+                                                            <td><strong>Exceções:</strong></td>
+                                                            <td>
+                                                                {% for excecao in mapping.excecoes %}
+                                                                    <span class="badge bg-warning">{{ excecao }}</span>
+                                                                {% endfor %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                </table>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h6>Configuração Contábil</h6>
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <td><strong>Conta Débito:</strong></td>
+                                                        <td><code>{{ mapping.conta_debito }}</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Conta Crédito:</strong></td>
+                                                        <td><code>{{ mapping.conta_credito }}</code></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Histórico Padrão:</strong></td>
+                                                        <td>{{ mapping.historico_contabil_padrao }}</td>
+                                                    </tr>
+                                                </table>
+                                                
+                                                {% if mapping.sub_mapeamentos %}
+                                                    <h6>Sub-mapeamentos</h6>
+                                                    <div class="border rounded p-2">
+                                                        {% for sub in mapping.sub_mapeamentos %}
+                                                            <div class="mb-2">
+                                                                <strong>{{ sub.rotulo_contabil }}</strong>
+                                                                <br>
+                                                                <small class="text-muted">
+                                                                    Palavras-chave: {{ sub.palavras_chave|join(', ') }}
+                                                                </small>
+                                                                <br>
+                                                                <small>
+                                                                    Débito: <code>{{ sub.conta_debito }}</code> | 
+                                                                    Crédito: <code>{{ sub.conta_credito }}</code>
+                                                                </small>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3">
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    onclick="editMapping('{{ mapping.id }}')">
+                                                <i data-feather="edit"></i>
+                                                Editar
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger" 
+                                                    onclick="deleteMapping('{{ mapping.id }}')">
+                                                <i data-feather="trash-2"></i>
+                                                Excluir
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i data-feather="layers" class="feather-lg text-muted"></i>
+                        <p class="text-muted mt-2">Nenhum mapeamento encontrado</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMappingModal">
+                            <i data-feather="plus"></i>
+                            Criar Primeiro Mapeamento
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i data-feather="info" class="feather-sm text-info"></i>
+                    Como Funcionam os Mapeamentos
+                </h5>
+                <p class="text-muted">
+                    Os mapeamentos contábeis definem como as transações são automaticamente classificadas e 
+                    atribuídas às contas contábeis corretas. O sistema usa uma ordem de prioridade:
+                </p>
+                <ol class="text-muted">
+                    <li><strong>Regras Personalizadas:</strong> Criadas pelo usuário para casos específicos</li>
+                    <li><strong>Regex Avançado:</strong> Padrões complexos de correspondência (3 pontos)</li>
+                    <li><strong>Palavras-chave de Sub-mapeamentos:</strong> Correspondências específicas (2 pontos)</li>
+                    <li><strong>Palavras-chave Principais:</strong> Correspondências gerais (1 ponto)</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Mapping Modal -->
+<div class="modal fade" id="createMappingModal" tabindex="-1" aria-labelledby="createMappingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createMappingModalLabel">Criar Mapeamento Contábil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('create_mapping') }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="rotulo_contabil" class="form-label">Rótulo Contábil</label>
+                        <input type="text" class="form-control" id="rotulo_contabil" name="rotulo_contabil" required
+                               placeholder="ex: Despesas com Salários">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descricao_longa" class="form-label">Descrição Detalhada</label>
+                        <textarea class="form-control" id="descricao_longa" name="descricao_longa" rows="2"
+                                  placeholder="Descrição detalhada deste mapeamento contábil"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="tipo_transacao" class="form-label">Tipo de Transação</label>
+                        <select class="form-select" id="tipo_transacao" name="tipo_transacao" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="entrada">Entrada (Crédito)</option>
+                            <option value="saida">Saída (Débito)</option>
+                            <option value="neutro">Neutro (Transferência)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="palavras_chave" class="form-label">Palavras-chave</label>
+                        <input type="text" class="form-control" id="palavras_chave" name="palavras_chave" required
+                               placeholder="salario,ordenado,folha,pagamento (separadas por vírgula)">
+                        <div class="form-text">Liste as palavras-chave separadas por vírgula</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="regex_avancado" class="form-label">Regex Avançado (Opcional)</label>
+                        <input type="text" class="form-control" id="regex_avancado" name="regex_avancado"
+                               placeholder="Padrão regex para correspondências mais complexas">
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="conta_debito" class="form-label">Conta Débito</label>
+                                <input type="text" class="form-control" id="conta_debito" name="conta_debito" required
+                                       placeholder="ex: 3.1.1.01.001">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="conta_credito" class="form-label">Conta Crédito</label>
+                                <input type="text" class="form-control" id="conta_credito" name="conta_credito" required
+                                       placeholder="ex: 1.1.1.02.001">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="historico_contabil_padrao" class="form-label">Histórico Padrão</label>
+                        <input type="text" class="form-control" id="historico_contabil_padrao" name="historico_contabil_padrao"
+                               placeholder="Texto padrão para o histórico contábil">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="excecoes" class="form-label">Exceções (Opcional)</label>
+                        <input type="text" class="form-control" id="excecoes" name="excecoes"
+                               placeholder="palavras que excluem este mapeamento (separadas por vírgula)">
+                        <div class="form-text">Palavras que, se presentes, excluem este mapeamento</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Criar Mapeamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Preset Modal -->
+<div class="modal fade" id="presetModal" tabindex="-1" aria-labelledby="presetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="presetModalLabel">Gerenciar Presets</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="preset_name" class="form-label">Nome do Preset</label>
+                    <input type="text" class="form-control" id="preset_name" 
+                           placeholder="ex: Padrão Empresa Comercial">
+                </div>
+                
+                <div class="mb-3">
+                    <button class="btn btn-primary w-100" onclick="saveCurrentPreset()">
+                        <i data-feather="save"></i>
+                        Salvar Configuração Atual
+                    </button>
+                </div>
+                
+                <hr>
+                
+                <div class="mb-3">
+                    <label for="preset_list" class="form-label">Carregar Preset Existente</label>
+                    <select class="form-select" id="preset_list">
+                        <option value="">Selecione um preset</option>
+                        <option value="comercial">Padrão Empresa Comercial</option>
+                        <option value="servicos">Padrão Empresa de Serviços</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-success w-100" onclick="loadPreset()">
+                    <i data-feather="upload"></i>
+                    Carregar Preset Selecionado
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function editMapping(mappingId) {
+    alert('Funcionalidade de edição será implementada em breve');
+}
+
+function deleteMapping(mappingId) {
+    if (confirm('Tem certeza que deseja excluir este mapeamento?')) {
+        alert('Funcionalidade de exclusão será implementada em breve');
+    }
+}
+
+function saveCurrentPreset() {
+    const presetName = document.getElementById('preset_name').value;
+    if (!presetName) {
+        alert('Por favor, informe um nome para o preset');
+        return;
+    }
+    
+    if (confirm(`Salvar configuração atual como "${presetName}"?`)) {
+        alert('Funcionalidade de salvamento de preset será implementada em breve');
+    }
+}
+
+function loadPreset() {
+    const presetSelected = document.getElementById('preset_list').value;
+    if (!presetSelected) {
+        alert('Por favor, selecione um preset');
+        return;
+    }
+    
+    if (confirm('Carregar o preset selecionado? Isso substituirá a configuração atual.')) {
+        alert('Funcionalidade de carregamento de preset será implementada em breve');
+    }
+}
+</script>
+{% endblock %}
