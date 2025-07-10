@@ -297,12 +297,12 @@ def create_mapping():
             rotulo_contabil=request.form.get('rotulo_contabil'),
             descricao_longa=request.form.get('descricao_longa'),
             tipo_transacao=request.form.get('tipo_transacao'),
-            palavras_chave=request.form.get('palavras_chave', '').split(','),
+            palavras_chave=[k.strip() for k in request.form.get('palavras_chave', '').split(',') if k.strip()],
             regex_avancado=request.form.get('regex_avancado'),
             conta_debito=request.form.get('conta_debito'),
             conta_credito=request.form.get('conta_credito'),
             historico_contabil_padrao=request.form.get('historico_contabil_padrao'),
-            excecoes=request.form.get('excecoes', '').split(',')
+            excecoes=[e.strip() for e in request.form.get('excecoes', '').split(',') if e.strip()]
         )
         
         mappings = FileHandler.load_accounting_mappings()
@@ -316,6 +316,69 @@ def create_mapping():
         flash(f'Erro ao criar mapeamento: {str(e)}', 'error')
     
     return redirect(url_for('mappings'))
+
+@app.route('/mappings/edit/<mapping_id>', methods=['POST'])
+def edit_mapping(mapping_id):
+    """Edit an existing accounting mapping"""
+    try:
+        mappings = FileHandler.load_accounting_mappings()
+        mapping = next((m for m in mappings if m.id == mapping_id), None)
+        
+        if not mapping:
+            flash('Mapeamento não encontrado', 'error')
+            return redirect(url_for('mappings'))
+        
+        # Update mapping
+        mapping.rotulo_contabil = request.form.get('rotulo_contabil')
+        mapping.descricao_longa = request.form.get('descricao_longa')
+        mapping.tipo_transacao = request.form.get('tipo_transacao')
+        mapping.palavras_chave = [k.strip() for k in request.form.get('palavras_chave', '').split(',') if k.strip()]
+        mapping.regex_avancado = request.form.get('regex_avancado')
+        mapping.conta_debito = request.form.get('conta_debito')
+        mapping.conta_credito = request.form.get('conta_credito')
+        mapping.historico_contabil_padrao = request.form.get('historico_contabil_padrao')
+        mapping.excecoes = [e.strip() for e in request.form.get('excecoes', '').split(',') if e.strip()]
+        
+        FileHandler.save_accounting_mappings(mappings)
+        flash('Mapeamento atualizado com sucesso!', 'success')
+        
+    except Exception as e:
+        logger.error(f"Error editing mapping: {str(e)}")
+        flash(f'Erro ao editar mapeamento: {str(e)}', 'error')
+    
+    return redirect(url_for('mappings'))
+
+@app.route('/mappings/delete/<mapping_id>', methods=['POST'])
+def delete_mapping(mapping_id):
+    """Delete an accounting mapping"""
+    try:
+        mappings = FileHandler.load_accounting_mappings()
+        mappings = [m for m in mappings if m.id != mapping_id]
+        
+        FileHandler.save_accounting_mappings(mappings)
+        flash('Mapeamento excluído com sucesso!', 'success')
+        
+    except Exception as e:
+        logger.error(f"Error deleting mapping: {str(e)}")
+        flash(f'Erro ao excluir mapeamento: {str(e)}', 'error')
+    
+    return redirect(url_for('mappings'))
+
+@app.route('/mappings/get/<mapping_id>')
+def get_mapping(mapping_id):
+    """Get mapping data for editing"""
+    try:
+        mappings = FileHandler.load_accounting_mappings()
+        mapping = next((m for m in mappings if m.id == mapping_id), None)
+        
+        if not mapping:
+            return jsonify({'error': 'Mapeamento não encontrado'}), 404
+        
+        return jsonify(mapping.to_dict())
+        
+    except Exception as e:
+        logger.error(f"Error getting mapping: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/export')
 def export_page():

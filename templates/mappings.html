@@ -135,11 +135,13 @@
                                                 <i data-feather="edit"></i>
                                                 Editar
                                             </button>
-                                            <button class="btn btn-sm btn-outline-danger" 
-                                                    onclick="deleteMapping('{{ mapping.id }}')">
-                                                <i data-feather="trash-2"></i>
-                                                Excluir
-                                            </button>
+                                            <form method="POST" action="{{ url_for('delete_mapping', mapping_id=mapping.id) }}" 
+                                                  style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este mapeamento?')">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i data-feather="trash-2"></i>
+                                                    Excluir
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -269,6 +271,82 @@
     </div>
 </div>
 
+<!-- Edit Mapping Modal -->
+<div class="modal fade" id="editMappingModal" tabindex="-1" aria-labelledby="editMappingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editMappingModalLabel">Editar Mapeamento Contábil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editMappingForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit_rotulo_contabil" class="form-label">Rótulo Contábil</label>
+                        <input type="text" class="form-control" id="edit_rotulo_contabil" name="rotulo_contabil" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_descricao_longa" class="form-label">Descrição Detalhada</label>
+                        <textarea class="form-control" id="edit_descricao_longa" name="descricao_longa" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_tipo_transacao" class="form-label">Tipo de Transação</label>
+                        <select class="form-select" id="edit_tipo_transacao" name="tipo_transacao" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="entrada">Entrada (Crédito)</option>
+                            <option value="saida">Saída (Débito)</option>
+                            <option value="neutro">Neutro (Transferência)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_palavras_chave" class="form-label">Palavras-chave</label>
+                        <input type="text" class="form-control" id="edit_palavras_chave" name="palavras_chave" required>
+                        <div class="form-text">Liste as palavras-chave separadas por vírgula</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_regex_avancado" class="form-label">Regex Avançado (Opcional)</label>
+                        <input type="text" class="form-control" id="edit_regex_avancado" name="regex_avancado">
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_conta_debito" class="form-label">Conta Débito</label>
+                                <input type="text" class="form-control" id="edit_conta_debito" name="conta_debito" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_conta_credito" class="form-label">Conta Crédito</label>
+                                <input type="text" class="form-control" id="edit_conta_credito" name="conta_credito" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_historico_contabil_padrao" class="form-label">Histórico Padrão</label>
+                        <input type="text" class="form-control" id="edit_historico_contabil_padrao" name="historico_contabil_padrao">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_excecoes" class="form-label">Exceções (Opcional)</label>
+                        <input type="text" class="form-control" id="edit_excecoes" name="excecoes">
+                        <div class="form-text">Palavras que, se presentes, excluem este mapeamento</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Preset Modal -->
 <div class="modal fade" id="presetModal" tabindex="-1" aria-labelledby="presetModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -315,13 +393,37 @@
 {% block scripts %}
 <script>
 function editMapping(mappingId) {
-    alert('Funcionalidade de edição será implementada em breve');
-}
-
-function deleteMapping(mappingId) {
-    if (confirm('Tem certeza que deseja excluir este mapeamento?')) {
-        alert('Funcionalidade de exclusão será implementada em breve');
-    }
+    // Fetch mapping data
+    fetch(`/mappings/get/${mappingId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Erro: ' + data.error);
+                return;
+            }
+            
+            // Populate form
+            document.getElementById('edit_rotulo_contabil').value = data.rotulo_contabil || '';
+            document.getElementById('edit_descricao_longa').value = data.descricao_longa || '';
+            document.getElementById('edit_tipo_transacao').value = data.tipo_transacao || '';
+            document.getElementById('edit_palavras_chave').value = (data.palavras_chave || []).join(', ');
+            document.getElementById('edit_regex_avancado').value = data.regex_avancado || '';
+            document.getElementById('edit_conta_debito').value = data.conta_debito || '';
+            document.getElementById('edit_conta_credito').value = data.conta_credito || '';
+            document.getElementById('edit_historico_contabil_padrao').value = data.historico_contabil_padrao || '';
+            document.getElementById('edit_excecoes').value = (data.excecoes || []).join(', ');
+            
+            // Set form action
+            document.getElementById('editMappingForm').action = `/mappings/edit/${mappingId}`;
+            
+            // Show modal
+            const editModal = new bootstrap.Modal(document.getElementById('editMappingModal'));
+            editModal.show();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Erro ao carregar dados do mapeamento');
+        });
 }
 
 function saveCurrentPreset() {
